@@ -13,6 +13,9 @@ abstract class Controller {
         $this->route = $route;
         $this->view = New View($route);
         $this->model = $this->loadModel($route['controller']);
+        if (!PHP_SESSION_ACTIVE) {
+            session_start();
+        }
     }
 
     public function loadModel($name) {

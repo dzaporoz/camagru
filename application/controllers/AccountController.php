@@ -6,13 +6,16 @@ use application\core\Controller;
 
 class AccountController extends Controller {
     public function loginAction() {
+        if (isset($_SESSION['uid'])) {
+            $this->view->redirect('/');
+            exit();
+        }
         if (!empty($_POST)) {
-            $result = $this->model->checkLoginData($_POST['username'], $_POST['password']);    
+            $result = $this->model->login($_POST['username'], $_POST['password']);    
             if (!$result) {
                 $this->view->render('Login page', array('msg' => 'Wrong password'));
             }
             else {
-                session_start();
                 $_SESSION['uid'] = $result['uid'];
                 $this->view->redirect('/');
             }
@@ -22,6 +25,21 @@ class AccountController extends Controller {
     }
 
     public function registerAction() {
-        $this->view->render('Register page');
+        if (isset($_SESSION['uid'])) {
+            $this->view->redirect('/');
+            exit();
+        }
+        if (empty($_POST)) {
+            $this->view->render('Register page');
+        } else {
+            $result = $this->model->register($_POST['username'], $_POST['password'], $_POST['email']);    
+            if (!$result) {
+                $this->view->render('Register page', array('msg' => 'Error. Try again'));
+            }
+            else {
+                var_dump($result);
+                $this->view->redirect('/account/login');
+            }
+        }
     }
 }

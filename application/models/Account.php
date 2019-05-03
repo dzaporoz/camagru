@@ -10,24 +10,23 @@ class Account extends Model {
 #        echo 'model works';
 #    }
 
-    public function checkLoginData($login, $password) {
+    public function login($login, $password) {
         $hash = hash('whirlpool', $password);
         $sql = 'SELECT uid FROM users WHERE username = :username AND password = :password';
         $params = array('username' => $login, 'password' => $hash);
         return $this->db->row($sql, $params);
     }
 
-    public function register($login, $password) {
-        $sql = 'SELECT uid FROM users WHERE username = :username';
-        $params = array('username' => $login);
+    public function register($login, $password, $email) {
+        $sql = 'SELECT uid FROM users WHERE username = :username OR email = :email';
+        $params = array('username' => $login, 'email' => $email);
         if ($this->db->row($sql, $params)) {
             return false;
         } else {
-            $hash = whirlpool($password);
-            $sql = 'INSERT INTO users (username,password) VALUES (:username, :pasword)';
-            $params = array('username' => $login, 'password' => $hash);
-            $this->db->query($sql, $params);
-            return true;
+            $hash = hash('whirlpool', $password);
+            $sql = 'INSERT INTO users (username,password,email) VALUES ( :username, :password, :email)';
+            $params = array('username' => $login, 'password' => $hash, 'email' => $email);
+            return ($this->db->query($sql, $params)) ? true : false;
         }
     }
 }
