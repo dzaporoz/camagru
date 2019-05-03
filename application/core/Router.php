@@ -3,6 +3,8 @@
 namespace application\core;
 namespace application\core;
 
+use application\core\View;
+
 class Router {
 
     protected $routes = array();
@@ -40,13 +42,13 @@ class Router {
                     $controller = new $path($this->params);
                     $controller->$action();
                 } else {
-                    echo "method not found".$action;
+                    View::errorCode(404);
                 }
             } else {
-                echo "class not found ".$path;
+                View::errorCode(404);
             }          
         } else {
-            echo "route doesn`t exist";
+            View::errorCode(404);
         }
     }
 }
