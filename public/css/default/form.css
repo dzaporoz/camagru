@@ -1,0 +1,10 @@
+#form {
+    background-color: rgb(173, 169, 169);
+    margin: auto;
+    width: 35vw;
+    box-shadow: 2px 2px 3px #666666;
+    -webkit-box-shadow: 2px 2px 3px #666666;
+    -moz-box-shadow: 2px 2px 3px #666666;
+    padding: 6px 6px 4px 6px;
+    border: solid 1px #6D6D6D;   
+}

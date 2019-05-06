@@ -1,9 +1,9 @@
+<h3>Registration</h3>
 <?php if(isset($msg)) {
     echo "<div class=\"msg\">$msg</div>";
 }
 ?>
-<h3>Registration</h3>
-<form action="/account/register" method="post">
+<form id="form" action="/account/register" method="post">
     <p>Login</p>
     <p><input type="text" name="username"></p>
     <p>E-mail</p>
