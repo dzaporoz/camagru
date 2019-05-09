@@ -1,7 +1,6 @@
 <?php
 
 namespace application\core;
-namespace application\core;
 
 use application\core\View;
 
@@ -42,7 +41,7 @@ class Router {
                     $controller = new $path($this->params);
                     $controller->$action();
                 } else {
-                    View::errorCode(404);
+                   View::errorCode(404);
                 }
             } else {
                 View::errorCode(404);

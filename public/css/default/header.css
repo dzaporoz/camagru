@@ -95,6 +95,7 @@
   margin: 0;
   padding: 0;
   width: 8vw;
+  min-width: 100px;
   position: absolute;
   top: 3.8vw;
   right: 0vw;
@@ -131,3 +132,15 @@
 * html #menu-bar {
   height: 1%;
 }
+
+.side-menu 
+{ 
+   display: none;
+
+} 
+#header-corner:focus ~ .side-menu, 
+#header-corner:active ~ .side-menu, 
+.side-menu:hover 
+{ 
+   display: block; 
+} 

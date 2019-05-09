@@ -1,13 +1,13 @@
 <?php
     if (isset($_SESSION['uid'])) {
         if ($user_logo == NULL) {
-            $user_logo = '/public/img/default/not-logged.png';
+            $user_logo = '/public/img/default/no-photo.png';
         } 
         $corner = <<<REGISTERED
         <li id="header-corner"><a href="javascript:void(0);" tabindex="1" >$username<img src="$user_logo" alt="not logged"></a></li>
         <ul class="side-menu">
-        <li><a href="#1">Add a photo</a></li>
-        <li><a href="#2">Settings</a></li>
+        <li><a href="/photo">Add a photo</a></li>
+        <li><a href="/settings">Settings</a></li>
         <li><a href="/account/logout">Log out</a></li>
         </ul>
 REGISTERED;
@@ -22,8 +22,11 @@ UNREGISTERED;
 <head>
     <title><?php echo $title ?></title>
     <link rel="stylesheet" href="/public/css/default/header.css">
-    <link rel="stylesheet" href="/public/css/default/hidden-menu.css">
     <link rel="stylesheet" href="/public/css/default/form.css">
+    <?php if (isset($styles)) foreach ($styles as $styleUrl) { 
+        echo "<link rel=\"stylesheet\" href=\"/public/css/default/$styleUrl\">"; }?>
+    <?php if (isset($scripts)) foreach ($scripts as $scriptUrl) {
+        echo "<script type=\"text/javascript\" src=\"/public/scripts/default/$scriptUrl\" async></script>"; }?>
 </head>
 <body>
     <ul id="menu-bar">
@@ -31,6 +34,7 @@ UNREGISTERED;
         <li id="header-name"><a href="/">Camagru</a></li>
         <li id="corner"><?php echo $corner ?></li>
     </ul>
+    <h1 style="margin-top: 4vw;">Posting a photo</h1>
     <?php echo $content; ?>
 </body>
 </html>

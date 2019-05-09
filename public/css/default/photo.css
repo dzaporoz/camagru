@@ -1,0 +1,92 @@
+#myOnlineCamera {
+  margin: auto;
+  overflow: auto;
+  position: relative;
+}
+
+#myOnlineCamera video, canvas {
+  width: 65vw;
+  height: 36.6vw;
+  margin: auto;
+  display: block;
+}
+
+#myOnlineCamera canvas {
+  display:none;
+}
+
+#snapShot {
+  height: 36.6vw;
+  width: auto;
+  max-width: 65vw;
+  margin: auto;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+  position: absolute;
+  bottom: 10%;
+	z-index: -1;
+}
+
+.buttons {
+  clear: both;
+  border: none;
+  width: 4vw;
+  height: 4vw;
+  position: absolute;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: 4vw 4vw;
+  background-position: left top;
+  cursor: pointer;
+  display: none;
+  bottom: 10%;
+}
+
+#okBtn, #cancelBtn {
+  background-color:rgba(0, 0, 0, 0.2);
+}
+
+#photoBtn, #loadBtn {
+  border-radius: 0%;
+}
+
+#photoBtn {
+  left: 46%;
+  background-image: url("/public/img/default/photo.svg");
+}
+
+#loadBtn {
+  left: 51%;
+  background-image: url("/public/img/default/load.svg");
+}
+
+#okBtn {
+  left: 46%;
+  background-image: url("/public/img/default/ok.svg")
+}
+
+#cancelBtn {
+  left: 51%;
+  background-image: url("/public/img/default/cancel.svg")
+}
+
+#photoBtn:hover {
+  background-image: url("/public/img/default/photo-hover.svg");
+}
+
+#loadBtn:hover {
+  background-image: url("/public/img/default/load-hover.svg");
+}
+
+#okBtn:hover {
+  background-image: url("/public/img/default/ok-hover.svg")
+}
+
+#cancelBtn:hover {
+  background-image: url("/public/img/default/cancel-hover.svg")
+}

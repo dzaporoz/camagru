@@ -22,8 +22,13 @@ return [
         'action' => 'register',
     ],
 
-    'news/show' => [
-        'controller' => 'news',
+    'settings' => [
+        'controller' => 'settings',
         'action' => 'show',
-    ]
+    ],
+
+    'photo' => [
+        'controller' => 'photo',
+        'action' => 'add',
+    ],
 ];
