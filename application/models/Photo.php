@@ -15,5 +15,14 @@ class Photo extends Model {
             return $this->db->row($sql, $params);
         }
     }
-    
+
+    public function addPost($imgUrl, $description) {
+        if (!isset($_SESSION['uid'])) {
+            return false;
+        }
+        $sql = 'INSERT INTO images (uid, img_url, img_title) VALUES (:uid, :img_url, :img_title)';
+        $params = array('uid' => $_SESSION['uid'], 'img_url' => $imgUrl, 'img_title' => $description);
+        return $this->db->insert($sql, $params);    
+    }
+
 }

@@ -57,6 +57,7 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: true })
 
 document.getElementById("photoBtn").addEventListener("click", takePhoto);
 document.getElementById("cancelBtn").addEventListener("click", cancelPhoto);
+document.getElementById("okBtn").addEventListener("click", post);
 document.querySelector("input[type=file]").addEventListener("change", loadPhoto);
 }
 
@@ -118,9 +119,19 @@ function takePhoto(){
 }
 
 function loadPhoto() {
-  var preview = document.querySelector('#snapShot');
-  var file = document.querySelector('input[type=file]').files[0];
-  var reader = new FileReader();
+  var canvas = document.querySelector("canvas"),
+      context = canvas.getContext("2d"),  
+      preview = document.querySelector('#snapShot');
+      file = document.querySelector('input[type=file]').files[0];
+      reader = new FileReader();
+  var myImg = new Image();
+  myImg.onload = function() {
+    canvas.width = 1024;
+    canvas.height = 768;
+    context.drawImage(myImg, 0, 0, myImg.width, myImg.height,
+                      0, 0, 1024, 768);
+    
+ };    
 
   // when user select an image, `reader.readAsDataURL(file)` will be triggered
   // reader instance will hold the result (base64) data
@@ -134,6 +145,8 @@ function loadPhoto() {
     document.querySelector('#okBtn').style.display = "block";
     document.querySelector('#cancelBtn').style.display = "block";
     preview.src = reader.result;
+
+    myImg.src = reader.result;
   }, false);
 
   if (file) {
@@ -141,24 +154,7 @@ function loadPhoto() {
     reader.readAsDataURL(file);
   } else {
     console.log('inside else');
-
-
-
-//   var reader = new FileReader();
-//  reader.onload = function()
-//  {
-//   var output = document.getElementById('snapShot');
-
-//   video.style.display = "none";
-//   document.querySelector('#photoBtn').style.display = "none";
-//   document.querySelector('#loadBtn').style.display = "none";
-//   document.querySelector('#okBtn').style.display = "inline";
-//   document.querySelector('#cancelBtn').style.display = "inline";
-
-//   output.src = reader.result;
-//  }
-//  reader.readAsDataURL(event.target.files[0]);
-}
+  }
 }
 
 function cancelPhoto() {
@@ -170,3 +166,26 @@ function cancelPhoto() {
   document.querySelector('#cancelBtn').style.display = "none";
   document.querySelector('#snapShot').style.display = "none";
 }
+
+function post() {
+  var canvas = document.querySelector("canvas");
+  var dataURL = canvas.toDataURL("image/png");
+  document.getElementById('hidden_data').value = dataURL;
+  var fd = new FormData(document.forms["uploading-form"]);
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4) {
+      if (this.status == 200 && xhr.responseText == 'ok') {
+      window.location.href = '/';
+      } else {
+        msgBox = document.getElementById("msg");
+        msgBox.innerHTML = "An error has occurred. Please try again.";
+        msgBox.className = "err-msg";
+        msgBox.style.display = "block";
+        cancelPhoto();
+      }
+    }
+  };
+  xhr.open('POST', '/photo/load', true);
+  xhr.send(fd);
+};

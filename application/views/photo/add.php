@@ -1,5 +1,9 @@
 <div id="myOnlineCamera">
     <input type="file" name="file" id="file" class="inputfile" accept="image/*" />
+    <form action="/photo/load" method="post" accept-charset="utf-8" name="uploading-form">
+            <input name="hidden_data" id='hidden_data' type="hidden"/>
+            <input name="description" id='description' tupe="text"/>
+    </form>
     <video>Webcam preview is not supported</video>
     <img id="snapShot">
     <canvas></canvas>

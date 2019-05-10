@@ -33,4 +33,9 @@ class Db {
         $result = $this->query($sql, $params);
         return $result->fetchColumn();
     }
+
+    public function insert($sql, $params = []) {
+        $result = $this->query($sql, $params)->errorCode();
+        return ((int)$result) ? false : true;
+    }
 }

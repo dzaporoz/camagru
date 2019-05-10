@@ -31,4 +31,9 @@ return [
         'controller' => 'photo',
         'action' => 'add',
     ],
+
+    'photo/load' => [
+        'controller' => 'photo',
+        'action' => 'load',
+    ],
 ];

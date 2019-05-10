@@ -35,6 +35,9 @@ UNREGISTERED;
         <li id="corner"><?php echo $corner ?></li>
     </ul>
     <h1 style="margin-top: 4vw;">Posting a photo</h1>
+    <div id="msg" class="msg" <?php if(!isset($msg)) echo 'style="display:none"' ?>>
+        <?php if(isset($msg)) echo $msg ?>
+    </div>
     <?php echo $content; ?>
 </body>
 </html>

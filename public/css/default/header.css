@@ -144,3 +144,7 @@
 { 
    display: block; 
 } 
+
+.err-msg {
+  background-color: red;
+}
