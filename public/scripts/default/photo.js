@@ -46,7 +46,7 @@ navigator.mediaDevices.getUserMedia({ audio: false, video: true })
   }
   video.onloadedmetadata = function(e) {
     video.play();
-    document.querySelector('#snapShot').style.display = "none";
+    document.querySelector('canvas').style.display = "none";
     document.querySelector('#photoBtn').style.display = "block";
     document.querySelector('#loadBtn').style.display = "block";
   };
@@ -88,7 +88,6 @@ function takePhoto(){
 
   var hidden_canvas = document.querySelector('canvas'),
       video = document.querySelector('video'),
-      image = document.querySelector('#snapShot'),
 
       // Get the exact size of the video element.
       width = video.videoWidth,
@@ -109,29 +108,41 @@ function takePhoto(){
   video.style.display = "none";
   document.querySelector('#photoBtn').style.display = "none";
   document.querySelector('#loadBtn').style.display = "none";
-  document.querySelector('#snapShot').style.display = "block";
+  document.querySelector('canvas').style.display = "block";
   document.querySelector('#okBtn').style.display = "block";
   document.querySelector('#cancelBtn').style.display = "block";
-  var imageDataURL = hidden_canvas.toDataURL('image/png');
-
-  // Set the dataURL as source of an image element, showing the captured photo.
-  image.setAttribute('src', imageDataURL); 
 }
 
 function loadPhoto() {
   var canvas = document.querySelector("canvas"),
       context = canvas.getContext("2d"),  
-      preview = document.querySelector('#snapShot');
-      file = document.querySelector('input[type=file]').files[0];
-      reader = new FileReader();
-  var myImg = new Image();
-  myImg.onload = function() {
+      file = document.querySelector('input[type=file]').files[0],
+      reader = new FileReader(),
+      tempImg = new Image();
+  tempImg.onload = function() {
     canvas.width = 1024;
     canvas.height = 768;
-    context.drawImage(myImg, 0, 0, myImg.width, myImg.height,
-                      0, 0, 1024, 768);
-    
- };    
+    var canvAsRatio = canvas.width / canvas.height,
+        imgAsRatio = tempImg.width / tempImg.height,
+        x, y, finalHeight, finalWidth;
+    if (imgAsRatio < canvAsRatio) {
+      finalHeight = canvas.height;
+      finalWidth = tempImg.width * (finalHeight / tempImg.height);
+      x = (canvas.width - finalWidth) / 2
+      y = 0;
+    } else if (imgAsRatio > canvAsRatio) {
+      finalWidth = canvas.width;
+      finalHeight = tempImg.height * (finalWidth / tempImg.width);
+      x = 0;
+      y = (canvas.height - finalHeight) / 2;
+    } else {
+      x = 0;
+      y = 0;
+      finalHeight = canvas.height;
+      finalWidth = canvas.width;
+    }
+    context.drawImage(tempImg, x, y, finalWidth, finalHeight);
+  };    
 
   // when user select an image, `reader.readAsDataURL(file)` will be triggered
   // reader instance will hold the result (base64) data
@@ -139,32 +150,28 @@ function loadPhoto() {
   // the base64 data and replace it with the image tag src attribute
   reader.addEventListener("load", function() {
     document.querySelector("video").style.display = "none";
-    document.querySelector('#snapShot').style.display = "block";
+    document.querySelector('canvas').style.display = "block";
     document.querySelector('#photoBtn').style.display = "none";
     document.querySelector('#loadBtn').style.display = "none";
     document.querySelector('#okBtn').style.display = "block";
     document.querySelector('#cancelBtn').style.display = "block";
-    preview.src = reader.result;
-
-    myImg.src = reader.result;
+    tempImg.src = reader.result;
   }, false);
 
   if (file) {
-    console.log('inside if');
     reader.readAsDataURL(file);
   } else {
-    console.log('inside else');
+    errorMsg('An error has occurred. Wrong file.');
   }
 }
 
 function cancelPhoto() {
-  document.querySelector('#snapShot').src = "";
   document.querySelector('video').style.display = "block";
   document.querySelector('#photoBtn').style.display = "block";
   document.querySelector('#loadBtn').style.display = "block";
   document.querySelector('#okBtn').style.display = "none";
   document.querySelector('#cancelBtn').style.display = "none";
-  document.querySelector('#snapShot').style.display = "none";
+  document.querySelector('canvas').style.display = "none";
 }
 
 function post() {
@@ -178,14 +185,24 @@ function post() {
       if (this.status == 200 && xhr.responseText == 'ok') {
       window.location.href = '/';
       } else {
+        errorMsg('An error has occurred. Please try again.');
+        /*
         msgBox = document.getElementById("msg");
         msgBox.innerHTML = "An error has occurred. Please try again.";
         msgBox.className = "err-msg";
         msgBox.style.display = "block";
-        cancelPhoto();
+        cancelPhoto();*/
       }
     }
   };
   xhr.open('POST', '/photo/load', true);
   xhr.send(fd);
 };
+
+function errorMsg(msgString) {
+  msgBox = document.getElementById("msg");
+  msgBox.innerHTML = msgString;
+  msgBox.className = "err-msg";
+  msgBox.style.display = "block";
+  cancelPhoto();
+}
