@@ -1,10 +1,65 @@
+var LoadedImgs = 0;
+
 if( document.readyState !== 'loading' ) {
-  prepareVideo();
+  initializeFeed()
 } else {
   document.addEventListener('DOMContentLoaded', function () {
-      prepareVideo();
+    initializeFeed();
   });
 }
+
+function initializeFeed() {
+//  document.addEventListener('click', likeFunction (event));
+  document.addEventListener('scroll', function (event) {
+    var scroll = document.body.scrollTop || window.scrollY;
+    if (document.body.scrollHeight -
+        scroll - window.innerHeight < 500) {
+        loadFeed();
+    }
+  /*  alert('document.body.scrollHeight: '+document.body.scrollHeight+'\n'+
+    'document.body.scrollTop: '+scroll+'\n'+
+    'window.innerHeight: '+window.innerHeight);
+    */
+});
+loadFeed();  
+}
+
+function likeFunction (event)
+{
+  event = event || window.event;
+  //var target = event.target || event.srcElement;
+  alert(event);
+}
+
+function loadFeed() {
+  if (LoadedImgs < 0) { return; }
+  var loadIcon = document.querySelector('#feedLoad'),
+  xhr = new XMLHttpRequest(),
+  params = 'action=loadFeed&img_num=' + LoadedImgs;
+  loadIcon.style.display = "block";
+  xhr.open('POST', 'main/action', true);
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.onreadystatechange = function() {//Call a function when the state changes.
+    if(xhr.readyState == 4 && xhr.status == 200) {
+      var feed = document.querySelector('#feed'),
+      response = xhr.responseText;
+      if (response == "") {
+        LoadedImgs = -1;
+        loadIcon.style.display = "none";
+        return;
+      }
+      LoadedImgs += parseInt(response);
+      response = response.substring(response.indexOf("<"));
+      feed.innerHTML = feed.innerHTML + response;  
+      //alert(xhr.responseText);
+      loadIcon.style.display = "none";
+    }
+  }
+  xhr.send(params);
+}
+
+
+
 
 function prepareVideo() {
 // Older browsers might not implement mediaDevices at all, so we set an empty object first
@@ -185,7 +240,7 @@ function post() {
       if (this.status == 200 && xhr.responseText == 'ok') {
       window.location.href = '/';
       } else {
-        errorMsg(xhr.responseText);
+        errorMsg('An error has occurred. Please try again.');
         /*
         msgBox = document.getElementById("msg");
         msgBox.innerHTML = "An error has occurred. Please try again.";
