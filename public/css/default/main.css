@@ -1,0 +1,104 @@
+#feedLoad {
+  display: none;
+  width: 4vw;
+  height: 4vw;
+  position: relative;
+  margin: auto;
+  background-repeat: no-repeat;
+  background-size: 4vw 4vw;
+  background-position: left top;
+  background-image: url("/public/img/default/hourglass.svg");
+}
+
+#feed {
+  margin: auto;
+  width: 75vw;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.element {
+  width: 24vw;
+  height: 18vw;
+  margin-bottom: 1.5vw;
+  background-repeat: no-repeat;
+  background-origin: padding-box;
+  background-size: 100%;
+  background-position: center;
+  border: 1px black solid; 
+}
+
+.element:hover .elementData {
+  display: block;
+}
+
+.elementData {
+  width: 24vw;
+  height: 18vw;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  position: relative;
+}
+
+.elementData .likes {
+  position: absolute;
+  right: 1vw;
+  bottom: 1vw;
+  display: inline;
+}
+
+.elementData .likes img {
+  width: 3vw;
+  height: 3vw;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.elementData .likes .unliked {
+  background-image: url("/public/img/default/unliked.svg");
+}
+
+.elementData .likes .liked {
+  background-image: url("/public/img/default/liked.svg");
+}
+
+.elementData .username a {
+  font-weight: bold;
+  color: white;
+  font-size: 2vw;
+  padding: 1vw;
+}
+
+.elementData .delete {
+  position: absolute;
+  right: 1vw;
+  top: 1vw;
+  width: 3vw;
+  height: 3vw;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background-image: url("/public/img/default/delete.svg");
+}
+
+.elementData .delete:hover {
+  background-image: url("/public/img/default/delete-hover.svg");
+}
+
+.elementData .elementTitle {
+  position: absolute;
+  top: 3vw;
+  padding: 1vw;
+}
+
+.elementData .comments {
+  position: absolute;
+  color: white;
+  bottom: 1vw;
+  left: 1vw;
+}

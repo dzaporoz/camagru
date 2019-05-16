@@ -20,8 +20,8 @@ class PhotoController extends Controller {
 
     public function loadAction() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!isset($_POST['hidden_data']) || strpos($_POST['hidden_data'], 'data:image/png;base64,') !== 0 || strlen($_POST['hidden_data']) > 500000) {
-                die('ko');
+            if (!isset($_POST['hidden_data']) || strpos($_POST['hidden_data'], 'data:image/png;base64,') !== 0 || strlen($_POST['hidden_data']) > 5000000) {
+                die("An error occured with image data. It's empty, broken or image is too big. Please, try another image.");
             }
             $upload_dir = "public/content/";
             $descr = isset($_POST['description']) ? $_POST['description'] : "";
@@ -37,12 +37,12 @@ class PhotoController extends Controller {
                 if ($result) {
                     echo 'ok';
                 } else {
-                    unlink($file) or die("ko");
-                    echo 'ko';
-            }
+                    unlink($file) or die("An error occured with our database. Please write us about this error.");
+                    echo 'An error occured with our database. Please write us about this error.';
+                }
             } else {
-                echo 'ko';
+                echo 'An error occured with our file system. Please write us about this error.';
             }
+        }
     }
-}
 }

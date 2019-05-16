@@ -7,10 +7,85 @@ use application\core\Controller;
 class MainController extends Controller {
     
     public function indexAction() {
-#        if (!isset($_SESSION['uid']) && empty($_GET)) {
- #           $this->view->redirect('/account/login');
-  #      } else {
-        $this->view->render('Main page', $this->model->getLoggedUserData());
-#        }
+        $vars = $this->model->getLoggedUserData();
+        $vars['styles'] = array('main.css');
+        $vars['scripts'] = array('main.js');
+        $this->view->render('Main page', $vars);
+    }
+
+    public function actionAction() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+            if ($_POST['action'] == 'loadFeed' && isset($_POST['img_num']) && is_numeric($_POST['img_num'])) {
+                $this->loadFeed((isset($_POST['uid']) && is_numeric($_POST['uid'])) ? $_POST['uid'] : 0, $_POST['img_num']);
+            } else if ($_POST['action'] == 'addLike' && isset($_POST['image_id']) && is_numeric($_POST['image_id'])) {
+                $this->addLike($_POST['image_id']);
+            } else if ($_POST['action'] == 'removeLike' && isset($_POST['image_id']) && is_numeric($_POST['image_id'])) {
+                $this->removeLike($_POST['image_id']);
+            } else if ($_POST['action'] == 'deleteImage' && isset($_POST['image_id']) && is_numeric($_POST['image_id'])) {
+                $this->deleteImage($_POST['image_id']);
+            }
+        }
+    }
+
+    protected function loadFeed($uid, $img_num) {
+        if ($imgData = $this->model->loadFeed($img_num, $uid)) {
+            $htmlItem = (string)count($imgData);
+            $currentUid = isset($_SESSION['uid']) ? $_SESSION['uid'] : 0;
+            foreach ($imgData as $image) {
+                $user = ($image["username"]) ? $image["username"] : "user ID: {$image["uid"]}";
+                $isLiked = ($image["liked"]) ? 'liked' : 'unliked';
+                $delete = ($image['uid'] == $currentUid) ? "<img class=\"delete\" image_id=\"{$image["img_id"]}\" src=\"/public/img/default/1px.png\">" : "";
+                $htmlItem .= <<< FEED_ITEM
+                    <div class="element" style="background-image: url('{$image["img_url"]}')">
+                        <div class="elementData">
+                            <div class="username"><a href="?uid={$image["uid"]}">$user</a></div>
+                            <div class="likes">
+                                <span>{$image["img_likes"]}</span>
+                                <img class="$isLiked" image_id="{$image["img_id"]}" src="public/img/default/1px.png"/>
+                            </div>
+                            $delete
+                            <div class="elementTitle">{$image["img_title"]}</div>
+                            <a class="comments" href="#">{$image["img_comments"]} comments</a>
+                        </div>
+                    </div>
+FEED_ITEM;
+            }
+            echo $htmlItem;
+        } else {
+            echo "";
+        }
+    }
+
+    protected function addLike($image_id) {
+        if (!isset($_SESSION['uid'])) {
+            die ('Only registered users can like images');
+        }
+        if ($this->model->addLike($image_id)) {
+            echo "ok";
+        } else {
+            echo "ko";
+        }
+    }
+
+    protected function removeLike($image_id) {
+        if (!isset($_SESSION['uid'])) {
+            die ('You logged out. Please sign in again to unlike images');
+        }
+        if ($this->model->removeLike($image_id)) {
+            echo "ok";
+        } else {
+            echo "ko";
+        }
+    }
+
+    protected function deleteImage($image_id) {
+        if (!isset($_SESSION['uid'])) {
+            die ('You logged out. Please sign in again to unlike images');
+        }
+        if ($this->model->deleteImage($image_id)) {
+            echo "ok";
+        } else {
+            echo "There is something wrong with our database or image doesn't exist. Please, write us about this error";
+        }
     }
 }

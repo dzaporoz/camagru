@@ -29,6 +29,11 @@ class Db {
         return $result->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function table($sql, $params = []) {
+        $result = $this->query($sql, $params);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function column($sql, $params = []) {
         $result = $this->query($sql, $params);
         return $result->fetchColumn();
@@ -37,5 +42,10 @@ class Db {
     public function insert($sql, $params = []) {
         $result = $this->query($sql, $params)->errorCode();
         return ((int)$result) ? false : true;
+    }
+
+    public function delete($sql, $params = []) {
+        $result = $this->query($sql, $params);
+        return ((int)$result->errorCode()) ? false : $result->rowCount();
     }
 }

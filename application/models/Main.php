@@ -15,4 +15,71 @@ class Main extends Model {
             return $this->db->row($sql, $params);
         }
     }
+
+    public function loadFeed($img_num, $uid) {
+        $current_uid = (isset($_SESSION['uid'])) ? $_SESSION['uid'] : 0;
+        $params = array('current_uid' => $current_uid);
+        $condition = "";
+        if ($uid) {
+            $condition = "WHERE images.uid = :uid";
+            $params['uid'] = $uid;
+        }
+        $sql = "SELECT images.img_id, images.uid, images.img_url, images.img_likes, images.img_title, images.img_time, images.img_comments, users.username,
+        CASE WHEN EXISTS(SELECT like_id FROM likes WHERE likes.uid = :current_uid AND image_id = images.img_id) THEN 1 ELSE 0 END AS 'liked'
+        FROM images LEFT JOIN users ON images.uid = users.uid $condition ORDER BY img_time DESC LIMIT $img_num, 9;";
+        return $this->db->table($sql, $params);
+    }
+
+    public function addLike($image_id) {
+        if (!isset($_SESSION['uid'])) {
+            return false;
+        }
+        $sql = 'SELECT * FROM likes WHERE uid= :uid AND image_id= :image_id';
+        $params = array('uid' => $_SESSION['uid'], 'image_id' => $image_id);
+        if ($this->db->row($sql, $params)) {
+            return true;
+        } else {
+            $sql = 'INSERT INTO likes(uid, image_id) VALUES (:uid, :image_id)';
+            if ($this->db->insert($sql, $params)) {
+                $sql = 'UPDATE images SET img_likes = img_likes + 1 WHERE img_id = :img_id';
+                $params = array('img_id' => $image_id);
+                $this->db->query($sql, $params);
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public function removeLike($image_id) {
+        if (!isset($_SESSION['uid'])) {
+            return false;
+        }
+        $sql = 'DELETE FROM likes WHERE uid= :uid AND image_id= :image_id';
+        $params = array('uid' => $_SESSION['uid'], 'image_id' => $image_id);
+        if ($this->db->delete($sql, $params)) {
+            $sql = 'UPDATE images SET img_likes = img_likes - 1 WHERE img_id = :img_id AND img_likes > 0';
+            $params = array('img_id' => $image_id);
+            $this->db->query($sql, $params);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteImage($image_id) {
+        if (!isset($_SESSION['uid'])) {
+            return false;
+        }
+        $sql = 'DELETE FROM images WHERE uid= :uid AND img_id= :img_id';
+        $params = array('uid' => $_SESSION['uid'], 'img_id' => $image_id);
+        if ($this->db->delete($sql, $params)) {
+            $sql = 'DELETE FROM likes WHERE image_id= :image_id';
+            $params = array('image_id' => $image_id);
+            $this->db->query($sql, $params);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
