@@ -10,12 +10,24 @@ if( document.readyState !== 'loading' ) {
 
 function initializeFeed() {
   document.addEventListener('click', function (event) {
-    if (event.target.classList.contains('unliked') && event.target.hasAttribute('image_id')) {
+    if (event.target.classList.contains('unliked')) {
+      if (event.target.hasAttribute('image_id')) {
       addLike(event.target);
-    } else if (event.target.classList.contains('liked') && event.target.hasAttribute('image_id')) {
-      removeLike(event.target);
-    } else if (event.target.classList.contains('delete') && event.target.hasAttribute('image_id')) {
-      deleteImage(event.target);
+      }
+    } else if (event.target.classList.contains('liked')) {
+      if (event.target.hasAttribute('image_id')) {
+        removeLike(event.target);
+      }
+    } else if (event.target.classList.contains('delete')) {
+      if (event.target.hasAttribute('image_id')) {
+        deleteImage(event.target);
+      }
+    } else if (!event.target.classList.contains('username') && (event.target.classList.contains('element') ||
+    event.target.classList.contains('elementData') || event.target.classList.contains('elementTitle') ||
+    event.target.classList.contains('comments'))) {
+      openPost(event.target);
+    } else if (event.target.id == 'overlay' || event.target.id == 'close-post') {
+      closePost();
     }
       
   }, false);
@@ -103,6 +115,19 @@ function deleteImage (button)
   xhr.send(params);
 }
 
+function openPost(element) {
+  document.querySelector('#overlay').style.display = "block";
+  var post = document.querySelector('#post-window'),
+  scroll = document.body.scrollTop || window.scrollY;
+  post.style.display = "flex";
+  post.style.top = scroll + 50 + 'px';
+}
+
+function closePost() {
+  document.querySelector('#overlay').style.display = "none";
+  document.querySelector('#post-window').style.display = "none";
+}
+
 function loadFeed() {
   if (LoadedImgs < 0) { return; }
   var loadIcon = document.querySelector('#feedLoad'),
@@ -123,13 +148,34 @@ function loadFeed() {
         loadIcon.style.display = "none";
         return;
       }
-      LoadedImgs += parseInt(response);
+      var givenImages = parseInt(response);
+      if (givenImages == 9) {
+        LoadedImgs += parseInt(response);
+      } else {
+        LoadedImgs = -1;
+      }
       response = response.substring(response.indexOf("<"));
       feed.innerHTML = feed.innerHTML + response;  
       loadIcon.style.display = "none";
     }
   }
   xhr.send(params);
+}
+
+function getPostId(element) {
+  var postId;
+  if (postId = element.getAttribute('image_id')) {
+    return postId;
+  } else if (!element.className.match(/(?:^|\s)element(?!\S)/) && (element = element.parentElement)) {
+    if (postId = element.getAttribute('image_id')) {
+      return postId;
+    } else if (!element.className.match(/(?:^|\s)element(?!\S)/) && (element = element.parentElement)) {
+      if (postId = element.getAttribute('image_id')) {
+        return postId;
+      }
+    }
+  }
+  return null;
 }
 
 function parseGetData() {

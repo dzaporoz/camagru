@@ -36,7 +36,7 @@ class MainController extends Controller {
                 $isLiked = ($image["liked"]) ? 'liked' : 'unliked';
                 $delete = ($image['uid'] == $currentUid) ? "<img class=\"delete\" image_id=\"{$image["img_id"]}\" src=\"/public/img/default/1px.png\">" : "";
                 $htmlItem .= <<< FEED_ITEM
-                    <div class="element" style="background-image: url('{$image["img_url"]}')">
+                    <div class="element" image_id="{$image["img_id"]}" style="background-image: url('{$image["img_url"]}')">
                         <div class="elementData">
                             <div class="username"><a href="?uid={$image["uid"]}">$user</a></div>
                             <div class="likes">
@@ -82,7 +82,11 @@ FEED_ITEM;
         if (!isset($_SESSION['uid'])) {
             die ('You logged out. Please sign in again to unlike images');
         }
-        if ($this->model->deleteImage($image_id)) {
+        $result = $this->model->deleteImage($image_id);
+        if ($result) {
+            if ($result !== true && file_exists($result)) {
+                unlink($result);
+            }
             echo "ok";
         } else {
             echo "There is something wrong with our database or image doesn't exist. Please, write us about this error";

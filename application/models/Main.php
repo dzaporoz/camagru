@@ -71,13 +71,21 @@ class Main extends Model {
         if (!isset($_SESSION['uid'])) {
             return false;
         }
+        $sql = 'SELECT img_url FROM images WHERE img_id= :img_id';
+        $params = array('img_id' => $image_id);
+        $img = $this->db->row($sql, $params);
         $sql = 'DELETE FROM images WHERE uid= :uid AND img_id= :img_id';
-        $params = array('uid' => $_SESSION['uid'], 'img_id' => $image_id);
+        //$params = array('uid' => $_SESSION['uid'], 'img_id' => $image_id);
+        $params['uid'] = $_SESSION['uid'];
         if ($this->db->delete($sql, $params)) {
             $sql = 'DELETE FROM likes WHERE image_id= :image_id';
             $params = array('image_id' => $image_id);
             $this->db->query($sql, $params);
-            return true;
+            if (!$img || !isset($img['img_url'])) {
+                return true;
+            } else {
+            return trim($img['img_url'], '/');
+            }
         } else {
             return false;
         }
