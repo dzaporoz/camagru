@@ -28,6 +28,8 @@ function initializeFeed() {
       openPost(event.target);
     } else if (event.target.id == 'overlay' || event.target.id == 'close-post') {
       closePost();
+    } else if (event.target.id == 'add-comment') {
+      addComment();
     }
       
   }, false);
@@ -158,6 +160,7 @@ function openPost(element) {
       element = element.parentElement;
     }
   }
+  document.querySelector('#post-window').setAttribute('image_id', imageId);
   document.querySelector('#post-image').style.backgroundImage = element.style.backgroundImage;
   document.querySelector('#like-post').className = element.querySelector('.likes img').className;
   document.querySelector('#like-post').setAttribute('image_id', imageId);
@@ -172,6 +175,26 @@ function openPost(element) {
 function closePost() {
   document.querySelector('#overlay').style.display = "none";
   document.querySelector('#post-window').style.display = "none";
+  document.querySelector('#comment-text').value = "";
+}
+
+function addComment() {
+  var textarea = document.querySelector('#comment-text');
+  if (textarea.value.length < 3 || textarea.value.length > 200) {
+    errorMsg("Comment must have lenght between 3 and 200 characters.");
+  } else {
+    var xhr = new XMLHttpRequest(),
+    params = 'action=addComment&comment_text=' + encodeURIComponent(textarea.value) + '&image_id=' +
+      document.querySelector('#post-window').getAttribute('image_id');
+    xhr.open('POST', 'main/action', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+      if(xhr.readyState == 4 && xhr.status == 200) {
+        
+      }
+  }
+  xhr.send(params);  
+  }
 }
 
 function loadFeed() {

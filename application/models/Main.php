@@ -96,4 +96,18 @@ class Main extends Model {
         $params = array('img_id' => $image_id);
         return $this->db->row($sql, $params);
     }
+
+    public function addComment($image_id, $comment_text) {
+        if (!isset($_SESSION['uid'])) {
+            return false;
+        }
+        $sql = 'INSERT INTO comments(uid, image_id, comment_text) VALUES (:uid, :image_id, :comment_text)';
+        $params = array('uid' => $_SESSION['uid'], 'image_id' => $image_id, 'comment_text' => $comment_text);
+        if ($this->db->insert($sql, $params)) {
+            $sql = 'UPDATE images SET img_comments = img_comments + 1 WHERE img_id = :img_id';
+                $params = array('img_id' => $image_id);
+                $this->db->query($sql, $params);
+                return true;
+        }
+    }
 }

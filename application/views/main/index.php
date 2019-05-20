@@ -16,10 +16,10 @@
     </div>
     <img id="close-post" src="/public/img/default/1px.png" />
     <span>only registered users can leave comments</span>
-    <form id="comment-form">
-        <textarea rows="7" cols="50">Leave your comment.</textarea>
+    <div id="comment-form">
+        <textarea rows="7" cols="50"  maxlength="200" placeholder = "Leave your comment..." id="comment-text"></textarea>
         <input type="image" id="add-comment" src="/public/img/default/1px.png">
-    </form>
+    </div>
     <div id="post-comments">
     </div>
 </div>

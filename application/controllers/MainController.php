@@ -25,6 +25,8 @@ class MainController extends Controller {
                 $this->deleteImage($_POST['image_id']);
             } else if ($_POST['action'] == 'getPost' && isset($_POST['image_id']) && is_numeric($_POST['image_id'])) {
                 $this->getPost($_POST['image_id']);
+            } else if ($_POST['action'] == 'addComment' && isset($_POST['comment_text']) && isset($_POST['image_id']) && is_numeric($_POST['image_id'])) {
+                $this->addComment($_POST['comment_text'], $_POST['image_id']);
             }
         }
     }
@@ -101,6 +103,18 @@ FEED_ITEM;
             echo json_encode($postData);
         } else {
             echo "null";
+        }
+    }
+
+    protected function addComment($comment_text, $image_id) {
+        if (isset($_SESSION['uid'])) {
+            if ($this->model->addComment($image_id, $comment_text)) {
+                echo 'ok';
+            } else {
+                echo "There is something wrong with our database or image doesn't exist. Please, write us about this error";
+            }
+        } else {
+            echo 'You logged out. Please sign in again to unlike images';
         }
     }
 }
