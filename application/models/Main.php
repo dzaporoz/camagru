@@ -90,4 +90,10 @@ class Main extends Model {
             return false;
         }
     }
+
+    public function getPost($image_id) {
+        $sql = 'SELECT * FROM images WHERE img_id= :img_id';
+        $params = array('img_id' => $image_id);
+        return $this->db->row($sql, $params);
+    }
 }

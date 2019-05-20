@@ -23,6 +23,8 @@ class MainController extends Controller {
                 $this->removeLike($_POST['image_id']);
             } else if ($_POST['action'] == 'deleteImage' && isset($_POST['image_id']) && is_numeric($_POST['image_id'])) {
                 $this->deleteImage($_POST['image_id']);
+            } else if ($_POST['action'] == 'getPost' && isset($_POST['image_id']) && is_numeric($_POST['image_id'])) {
+                $this->getPost($_POST['image_id']);
             }
         }
     }
@@ -45,7 +47,7 @@ class MainController extends Controller {
                             </div>
                             $delete
                             <div class="elementTitle">{$image["img_title"]}</div>
-                            <a class="comments" href="#">{$image["img_comments"]} comments</a>
+                            <a class="comments" href="javascript:void(0)">{$image["img_comments"]} comments</a>
                         </div>
                     </div>
 FEED_ITEM;
@@ -90,6 +92,15 @@ FEED_ITEM;
             echo "ok";
         } else {
             echo "There is something wrong with our database or image doesn't exist. Please, write us about this error";
+        }
+    }
+
+    protected function getPost($image_id) {
+        if ($postData = $this->model->getPost($image_id)) {
+            $postData['owner'] = (isset($postData['uid']) && $postData['uid'] == $_SESSION['uid']) ? 1 : 0;
+            echo json_encode($postData);
+        } else {
+            echo "null";
         }
     }
 }

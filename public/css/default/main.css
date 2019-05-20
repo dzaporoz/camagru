@@ -77,7 +77,7 @@
   padding: 1vw;
 }
 
-.elementData .delete {
+.delete {
   position: absolute;
   right: 1vw;
   top: 1vw;
@@ -90,7 +90,7 @@
   background-image: url("/public/img/default/delete.svg");
 }
 
-.elementData .delete:hover {
+.delete:hover {
   background-image: url("/public/img/default/delete-hover.svg");
 }
 
@@ -116,7 +116,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   z-index: 998;
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 25%;
 }
@@ -137,6 +137,7 @@
 
 #post-description {
   color: white;
+  margin-top: 1.4vw;
   font-size: 2vw;
   display: block;
   word-break: break-all;
@@ -146,12 +147,17 @@
 
 #post-data {
   display: inline-block;
+  width: 50vw;
 }
 
 #post-image {
   width: 50vw;
   height: 37.5vw;
   display: inline-block;
+  background-repeat: no-repeat;
+  background-origin: padding-box;
+  background-size: 100%;
+  background-position: center bottom;
 }
 
 #post-comments{
@@ -170,15 +176,33 @@
   cursor: pointer;
 }
 
+#post-likes {
+  float: right;
+}
+
+#post-likes span {
+  padding-top: 2vw;
+  color: white;
+  font-size: 3vw;
+}
+
 #like-post {
-  width: 3vw;
-  height: 3vw;
-  margin: 0;
+  width: 4vw;
+  height: 4vw;
+  margin: 1vw;
   padding: 0;
-  position: absolute;
-  top: 1vw;
-  right: 6vw;
   cursor: pointer;
+  float: right;
+}
+
+#delete-post {
+  width: 4vw;
+  height: 4vw;
+  margin: 1vw;
+  padding: 0;
+  position: static;
+  cursor: pointer;
+  float: right;
 }
 
 #close-post:hover {
@@ -197,3 +221,25 @@
         display: none;
 }
   
+#comment-form {
+  width: 100%;
+  display: block;
+  position: relative;
+}
+
+#comment-form textarea {
+  width: 98%; 
+}
+
+#add-comment {
+  background-image: url("/public/img/default/add.svg");
+  width: 4vw;
+  height: 4vw;
+  position: absolute;
+  bottom: 1vw;
+  right: 1vw;
+}
+
+#add-comment:hover {
+  background-image: url("/public/img/default/add-hover.svg");
+}

@@ -51,14 +51,7 @@ function addLike (button)
   xhr.onreadystatechange = function() {
     if(xhr.readyState == 4 && xhr.status == 200) {
       if (xhr.responseText == 'ok') {
-        if (button.className.match(/(?:^|\s)unliked(?!\S)/) ) {
-          button.className = button.className.replace( /(?:^|\s)unliked(?!\S)/g , '' );
-        }
-        if (!button.className.match(/(?:^|\s)liked(?!\S)/) ) {
-          button.className += " liked";
-        }
-        var numLikesElem = button.parentElement.querySelector('span');
-        numLikesElem.innerHTML = parseInt(numLikesElem.innerHTML) + 1;
+        changelike(button);
       } else if (xhr.responseText != 'ko') {
         errorMsg(xhr.responseText);
       }
@@ -69,24 +62,15 @@ function addLike (button)
 
 function removeLike (button)
 {
-  xhr = new XMLHttpRequest(),
-  params = 'action=removeLike&image_id=' + button.getAttribute('image_id');
+  var xhr = new XMLHttpRequest(),
+  image_id = button.getAttribute('image_id');
+  params = 'action=removeLike&image_id=' + image_id;
   xhr.open('POST', 'main/action', true);
   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhr.onreadystatechange = function() {
     if(xhr.readyState == 4 && xhr.status == 200) {
       if (xhr.responseText == 'ok') {
-        if (button.className.match(/(?:^|\s)liked(?!\S)/) ) {
-          button.className = button.className.replace(/(?:^|\s)liked(?!\S)/g , '');
-        }
-        if (!button.className.match(/(?:^|\s)unliked(?!\S)/) ) {
-          button.className += " unliked";
-        }
-        var numLikesElem = button.parentElement.querySelector('span');
-        var likesNum = parseInt(numLikesElem.innerHTML);
-        if (likesNum > 0) {
-          numLikesElem.innerHTML = likesNum - 1;
-        }
+        changelike(button);
       } else if (xhr.responseText != 'ko') {
         errorMsg(xhr.responseText);
       }
@@ -95,18 +79,45 @@ function removeLike (button)
   xhr.send(params);
 }
 
+function changelike(likeButton) {
+  var postWindowLikes, feedLikes, likesCount, imageId;
+  if (!(imageId = likeButton.getAttribute('image_id')) || !(postWindowLikes = document.querySelector('#post-likes'))
+  || !(feedLikes = document.querySelector(".element[image_id='" + imageId + "'] .likes"))) {
+    return;
+  }
+  likesCount = parseInt(feedLikes.querySelector('span').innerHTML);
+  if (likeButton.className.match(/(?:^|\s)liked(?!\S)/) ) {
+    postWindowLikes.querySelector('img').className = postWindowLikes.querySelector('img').className.replace(/(?:^|\s)liked(?!\S)/g , '');
+    postWindowLikes.querySelector('img').className += "unliked";
+    feedLikes.querySelector('img').className = feedLikes.querySelector('img').className.replace(/(?:^|\s)liked(?!\S)/g , '');
+    feedLikes.querySelector('img').className += "unliked";
+    if (likesCount > 0) {
+      postWindowLikes.querySelector('span').innerHTML = likesCount - 1;
+      feedLikes.querySelector('span').innerHTML = likesCount - 1;
+    }
+  } else {
+    postWindowLikes.querySelector('img').className = postWindowLikes.querySelector('img').className.replace(/(?:^|\s)unliked(?!\S)/g , '');
+    postWindowLikes.querySelector('img').className += "liked";
+    feedLikes.querySelector('img').className = feedLikes.querySelector('img').className.replace(/(?:^|\s)unliked(?!\S)/g , '');
+    feedLikes.querySelector('img').className += "liked";
+    postWindowLikes.querySelector('span').innerHTML = likesCount + 1;
+    feedLikes.querySelector('span').innerHTML = likesCount + 1;
+  }
+}
+
 function deleteImage (button)
 {
   if (!confirm('Are you sure want to delete this post.')) { return; }
   xhr = new XMLHttpRequest(),
-  params = 'action=deleteImage&image_id=' + button.getAttribute('image_id');
+  imageId = button.getAttribute('image_id');
+  params = 'action=deleteImage&image_id=' + imageId;
   xhr.open('POST', 'main/action', true);
   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhr.onreadystatechange = function() {
     if(xhr.readyState == 4 && xhr.status == 200) {
       if (xhr.responseText == 'ok') {
-        var post = button.parentElement.parentElement;
-        document.querySelector("#feed").removeChild(post);
+        closePost();
+        document.querySelector('#feed').removeChild(document.querySelector(".element[image_id='" + imageId + "']"));
       } else {
         errorMsg(xhr.responseText);
       }
@@ -116,11 +127,46 @@ function deleteImage (button)
 }
 
 function openPost(element) {
+/*
+  xhr = new XMLHttpRequest(),
+  params = 'action=getPost&image_id=' + getPostId(element);
+  xhr.open('POST', 'main/action', true);
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.onreadystatechange = function() {
+    if(xhr.readyState == 4 && xhr.status == 200) {
+      var postData = xhr.responseText;
+      alert(postData);
+      if (postData.has['img_url']) {
+        document.querySelector('#post-image').style.backgroundImage = postData['img_url'];      
+      }
+      if (postData.has[''])...
+      ...
+    }
+  }
+  xhr.send(params);
+*/
+
   document.querySelector('#overlay').style.display = "block";
   var post = document.querySelector('#post-window'),
-  scroll = document.body.scrollTop || window.scrollY;
+  scroll = document.body.scrollTop || window.scrollY,
+  imageId = getPostId(element);
   post.style.display = "flex";
   post.style.top = scroll + 50 + 'px';
+  if (!element.className.match(/(?:^|\s)element(?!\S)/) && element.parentElement) {
+    element = element.parentElement;
+    if (!element.className.match(/(?:^|\s)element(?!\S)/) && element.parentElement) {
+      element = element.parentElement;
+    }
+  }
+  document.querySelector('#post-image').style.backgroundImage = element.style.backgroundImage;
+  document.querySelector('#like-post').className = element.querySelector('.likes img').className;
+  document.querySelector('#like-post').setAttribute('image_id', imageId);
+  document.querySelector('#post-likes span').innerHTML = element.querySelector('.likes span').innerHTML;
+  document.querySelector('#post-description').innerHTML = element.querySelector('.elementTitle').innerHTML;
+  document.querySelector('#post-author').innerHTML = element.querySelector('.username a').innerHTML;
+  document.querySelector('#post-author').href = element.querySelector('.username a').href;
+  document.querySelector('#delete-post').setAttribute('image_id', imageId);
+  document.querySelector('#delete-post').style.display = (element.querySelector('.delete')) ? "inline": "none";
 }
 
 function closePost() {
