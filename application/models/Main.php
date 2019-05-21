@@ -110,4 +110,31 @@ class Main extends Model {
                 return true;
         }
     }
+
+    public function getComments($image_id) {
+        $params = array('image_id' => $image_id);
+        $sql = "SELECT comments.comment_id, comments.image_id, comments.uid, comments.comment_time,
+        comments.comment_text, users.username
+        FROM comments LEFT JOIN users ON comments.uid = users.uid WHERE comments.image_id = :image_id ORDER BY comments.comment_time DESC;";
+        return $this->db->table($sql, $params);
+    }
+
+    public function deleteComment($comment_id) {
+        if (!isset($_SESSION['uid'])) {
+            return false;
+        }
+        $sql = 'SELECT image_id FROM comments WHERE comment_id= :comment_id';
+        $params = array('comment_id' => $comment_id);
+        $image = $this->db->row($sql, $params);
+        $sql = 'DELETE FROM comments WHERE uid= :uid AND comment_id= :comment_id';
+        $params['uid'] = $_SESSION['uid'];
+        if ($result = $this->db->delete($sql, $params)) {
+            $sql = 'UPDATE images SET img_comments = img_comments - 1 WHERE img_id = :img_id AND img_comments > 0';
+            $params = array('img_id' => $image['image_id']);
+            $this->db->query($sql, $params);
+            return true;
+        } else {
+            return $result;
+        }
+    }
 }

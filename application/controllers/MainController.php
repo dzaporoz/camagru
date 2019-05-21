@@ -27,6 +27,10 @@ class MainController extends Controller {
                 $this->getPost($_POST['image_id']);
             } else if ($_POST['action'] == 'addComment' && isset($_POST['comment_text']) && isset($_POST['image_id']) && is_numeric($_POST['image_id'])) {
                 $this->addComment($_POST['comment_text'], $_POST['image_id']);
+            } else if ($_POST['action'] == 'showComments' && isset($_POST['image_id']) && is_numeric($_POST['image_id'])) {
+                $this->showComments($_POST['image_id']);
+            } else if ($_POST['action'] == 'deleteComment' && isset($_POST['comment_id']) && is_numeric($_POST['comment_id'])) {
+                $this->deleteComment($_POST['comment_id']);
             }
         }
     }
@@ -39,6 +43,7 @@ class MainController extends Controller {
                 $user = ($image["username"]) ? $image["username"] : "user ID: {$image["uid"]}";
                 $isLiked = ($image["liked"]) ? 'liked' : 'unliked';
                 $delete = ($image['uid'] == $currentUid) ? "<img class=\"delete\" image_id=\"{$image["img_id"]}\" src=\"/public/img/default/1px.png\">" : "";
+                $commentS = ($image['img_comments'] == 1) ? "" : "s";
                 $htmlItem .= <<< FEED_ITEM
                     <div class="element" image_id="{$image["img_id"]}" style="background-image: url('{$image["img_url"]}')">
                         <div class="elementData">
@@ -49,7 +54,7 @@ class MainController extends Controller {
                             </div>
                             $delete
                             <div class="elementTitle">{$image["img_title"]}</div>
-                            <a class="comments" href="javascript:void(0)">{$image["img_comments"]} comments</a>
+                            <a class="comments" href="javascript:void(0)">{$image["img_comments"]} comment$commentS</a>
                         </div>
                     </div>
 FEED_ITEM;
@@ -100,6 +105,7 @@ FEED_ITEM;
     protected function getPost($image_id) {
         if ($postData = $this->model->getPost($image_id)) {
             $postData['owner'] = (isset($postData['uid']) && $postData['uid'] == $_SESSION['uid']) ? 1 : 0;
+            $postData['img_title'] = htmlspecialchars($postData['img_title']);
             echo json_encode($postData);
         } else {
             echo "null";
@@ -115,6 +121,42 @@ FEED_ITEM;
             }
         } else {
             echo 'You logged out. Please sign in again to unlike images';
+        }
+    }
+
+    protected function showComments($image_id) {
+        $uid = (isset($_SESSION['uid'])) ? $_SESSION['uid'] : 0;
+        if ($comments = $this->model->getComments($image_id)) {
+            foreach ($comments as $comment) {
+                $user = ($comment["username"]) ? $comment["username"] : "user ID: {$comment["uid"]}";
+                $delete = ($uid == $comment['uid']) ? "<img class=\"delete\" src=\"/public/img/default/1px.png\"/>" : "";
+                $commentText = htmlspecialchars($comment['comment_text']);
+                echo <<< COMMENT
+                    <div class="comment" comment_id="{$comment["comment_id"]}">
+                        <a href="?uid={$comment["uid"]}">$user</a>,  {$comment["comment_time"]}$delete
+                        <span>$commentText</span>
+                        <hr/>
+                    </div>
+COMMENT;
+            }
+        } else if ($comments === false) {
+            echo 'ko';
+        } else {
+            echo "";
+        }
+    }
+
+    protected function deleteComment($comment_id) {
+        if (!isset($_SESSION['uid'])) {
+            die('You logged out. Please sign in again to delete comments');
+        }
+        $result = $this->model->deleteComment($comment_id);
+        if ($result) {
+            echo "ok";
+        } else if ($result === 0) {
+            echo "The comment_id / user_id pair is enexist";
+        } else {
+            echo "There is something wrong with our database or image doesn't exist. Please, write us about this error";
         }
     }
 }

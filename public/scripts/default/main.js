@@ -21,6 +21,8 @@ function initializeFeed() {
     } else if (event.target.classList.contains('delete')) {
       if (event.target.hasAttribute('image_id')) {
         deleteImage(event.target);
+      } else if (event.target.parentElement.hasAttribute('comment_id')) {
+        deleteComment(event.target.parentElement);
       }
     } else if (!event.target.classList.contains('username') && (event.target.classList.contains('element') ||
     event.target.classList.contains('elementData') || event.target.classList.contains('elementTitle') ||
@@ -170,6 +172,8 @@ function openPost(element) {
   document.querySelector('#post-author').href = element.querySelector('.username a').href;
   document.querySelector('#delete-post').setAttribute('image_id', imageId);
   document.querySelector('#delete-post').style.display = (element.querySelector('.delete')) ? "inline": "none";
+  document.querySelector('#post-comments-num').innerHTML = element.querySelector('.comments').innerHTML;
+  showComments(imageId);
 }
 
 function closePost() {
@@ -184,17 +188,73 @@ function addComment() {
     errorMsg("Comment must have lenght between 3 and 200 characters.");
   } else {
     var xhr = new XMLHttpRequest(),
+    image_id = document.querySelector('#post-window').getAttribute('image_id'),
     params = 'action=addComment&comment_text=' + encodeURIComponent(textarea.value) + '&image_id=' +
-      document.querySelector('#post-window').getAttribute('image_id');
+      image_id;
     xhr.open('POST', 'main/action', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
       if(xhr.readyState == 4 && xhr.status == 200) {
-        
+        if (xhr.responseText == 'ok') {
+          changeCommentsNum(image_id, 1);
+          textarea.value = "";
+          showComments(image_id);
+        } else {
+          errorMsg(xhr.responseText);
+        }
       }
   }
   xhr.send(params);  
   }
+}
+
+function showComments(imageId) {
+  var xhr = new XMLHttpRequest(),
+  params = 'action=showComments&image_id=' + imageId;
+  xhr.open('POST', 'main/action', true);
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.onreadystatechange = function() { 
+    if(xhr.readyState == 4 && xhr.status == 200) {
+      if (xhr.responseText != 'ko') {
+        document.querySelector('#post-comments').innerHTML = xhr.responseText;
+      } else {
+        errorMsg(xhr.responseText);
+      }
+    }
+  }
+  xhr.send(params); 
+}
+
+function deleteComment(comment) {
+  if (!confirm('Are you sure want to delete your comment')) {
+    return;
+  }
+  var xhr = new XMLHttpRequest(),
+  params = 'action=deleteComment&comment_id=' + comment.getAttribute('comment_id');
+  xhr.open('POST', 'main/action', true);
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.onreadystatechange = function() { 
+    if(xhr.readyState == 4 && xhr.status == 200) {
+      if (xhr.responseText == 'ok') {
+        comment.parentElement.removeChild(comment);
+        changeCommentsNum(document.querySelector('#post-window').getAttribute('image_id'), -1);
+      } else {
+        errorMsg(xhr.responseText);
+      }
+    }
+  }
+  xhr.send(params); 
+}
+
+function changeCommentsNum(imageId, value) {
+  var postCom = document.querySelector('#post-comments-num'),
+  feedCom = feedLikes = document.querySelector(".element[image_id='" + imageId + "'] .comments");
+  if (!postCom || !feedCom) {
+    return;
+  }
+  comNumber = parseInt(feedCom.innerHTML) + value;
+  feedCom.innerHTML = comNumber + ' comment' + ((comNumber == 1) ? '' : 's');
+  postCom.innerHTML = feedCom.innerHTML;
 }
 
 function loadFeed() {
