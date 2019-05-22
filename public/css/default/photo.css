@@ -4,16 +4,21 @@
   position: relative;
 }
 
-#myOnlineCamera video, canvas {
+#myOnlineCamera video, canvas, #video-error {
   width: 64vw;
   height: 48vw;
   margin: auto;
-  display: block;
+  display: none;
 }
 
-#myOnlineCamera canvas {
-  
+#video-error {
+  background-color: gray;
+  color: white;
+  font-size: 2vw;
+  cursor: pointer;
 }
+
+
 
 #snapShot {
   height: 36.6vw;
