@@ -1,4 +1,12 @@
-var error = false;
+var error = false,
+image = new Image(),
+frame = new Image(),
+onlay = new Image();
+
+frame.setAttribute('is-visible', 'false');
+image.onload = function() { renderPhoto(); };
+frame.onload = function() { renderPhoto(); };
+onlay.onload = function() { renderPhoto(); };
 
 if( document.readyState !== 'loading' ) {
   prepareVideo();
@@ -47,7 +55,11 @@ document.getElementById("photoBtn").addEventListener("click", takePhoto);
 document.getElementById("cancelBtn").addEventListener("click", cancelPhoto);
 document.getElementById("okBtn").addEventListener("click", post);
 document.querySelector("input[type=file]").addEventListener("change", loadPhoto);
-
+document.addEventListener('click', function (event) {
+  if (event.target.className.match(/(?:^|\s)frame(?!\S)/)) {
+    applyFrame(event.target); 
+  }
+});
 }
 
 function takePhoto(){
@@ -59,6 +71,8 @@ function takePhoto(){
   hidden_canvas.width = width;
   hidden_canvas.height = height;
   context.drawImage(video, 0, 0, width, height);
+  removeFrame();
+  image.src = hidden_canvas.toDataURL("image/png");
   changeInterface(false);
 }
 
@@ -91,6 +105,8 @@ function loadPhoto() {
       finalWidth = canvas.width;
     }
     context.drawImage(tempImg, x, y, finalWidth, finalHeight);
+    removeFrame();
+    image.src = canvas.toDataURL("image/png");
   };    
 
   reader.addEventListener("load", function() {
@@ -105,7 +121,59 @@ function loadPhoto() {
   }
 }
 
+function removeFrame() {
+  frame.setAttribute('is-visible', 'false');
+}
+
+function applyFrame(element) {
+  if (element.id == "no-frame") {
+    removeFrame();
+    renderPhoto();
+  } else {
+    frame.setAttribute('is-visible', 'true');
+    var style = element.currentStyle || window.getComputedStyle(element, false),
+      bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
+      bi = bi.replace(/preview\// , "");
+    frame.src = bi;
+  }
+}
+
+function renderPhoto() {
+  var canvas = document.querySelector('canvas'),
+  context = canvas.getContext("2d"),
+  width = canvas.width, height = canvas.height,
+  startX, startY, endX, endY;
+
+  if (frame.getAttribute('is-visible') == 'true') {
+    startX = width * 0.07;
+    startY = width * 0.07;
+    endX = width - startX * 2;
+    endY = height * (endX / width);
+    /*
+    endX = width - 50;
+    endY = height - 50;
+*/
+  } else {
+    startX = startY = 0;
+    endX = width;
+    endY = height;
+  }
+  alert('width - ' + width + ' height - ' + height +
+  '\nsX - ' + startX + '  sY - ' + startY +
+  '\neX - ' + endX + '  eY - ' + endY +
+  '\n frame - ' + frame.src);
+
+  context.drawImage(image, startX, startY, endX, endY);
+  if (onlay.src) {
+    context.drawImage(onlay, 0, 0, width, height);
+  }
+  if (frame.getAttribute('is-visible') == 'true') {
+    context.drawImage(frame, 0, 0, width, height);
+  }
+}
+
 function cancelPhoto() {
+  onlay.src="";
   changeInterface(true);
 }
 
@@ -123,6 +191,7 @@ function changeInterface(toVideoScreen) {
     document.querySelector('#okBtn').style.display = "none";
     document.querySelector('#cancelBtn').style.display = "none";
     document.querySelector('canvas').style.display = "none";
+    document.querySelector('#frames').style.visibility = "hidden";
   } else {
     document.querySelector('#photoBtn').style.display = "none";
     document.querySelector('#loadBtn').style.display = "none";
@@ -131,6 +200,7 @@ function changeInterface(toVideoScreen) {
     document.querySelector('canvas').style.display = "block";
     document.querySelector('#okBtn').style.display = "block";
     document.querySelector('#cancelBtn').style.display = "block";
+    document.querySelector('#frames').style.visibility = "visible";
   }
 }
 

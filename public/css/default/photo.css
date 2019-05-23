@@ -1,12 +1,33 @@
+#flexbox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#frames {
+  width: 17vw;
+  height: 33vw;
+  overflow-y: scroll;
+  visibility: hidden;
+}
+
+.frame {
+  width: 15vw;
+  height: auto;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
 #myOnlineCamera {
-  margin: auto;
   overflow: auto;
   position: relative;
+  width: 45vw;
 }
 
 #myOnlineCamera video, canvas, #video-error {
-  width: 64vw;
-  height: 48vw;
+  width: 44vw;
+  height: 33vw;
   margin: auto;
   display: none;
 }
@@ -52,6 +73,10 @@
   bottom: 10%;
 }
 
+#description {
+  width: 44vw;
+}
+
 #okBtn, #cancelBtn {
   background-color:rgba(0, 0, 0, 0.2);
 }
@@ -61,22 +86,22 @@
 }
 
 #photoBtn {
-  left: 46%;
+  left: 41%;
   background-image: url("/public/img/default/photo.svg");
 }
 
 #loadBtn {
-  left: 51%;
+  left: 56%;
   background-image: url("/public/img/default/load.svg");
 }
 
 #okBtn {
-  left: 46%;
+  left: 41%;
   background-image: url("/public/img/default/ok.svg")
 }
 
 #cancelBtn {
-  left: 51%;
+  left: 56%;
   background-image: url("/public/img/default/cancel.svg")
 }
 
