@@ -4,14 +4,14 @@
   justify-content: center;
 }
 
-#frames {
+#frames, #onlays {
   width: 17vw;
   height: 33vw;
   overflow-y: scroll;
   visibility: hidden;
 }
 
-.frame {
+.frame, .onlay {
   width: 15vw;
   height: auto;
   background-position: 0 0;
@@ -75,6 +75,7 @@
 
 #description {
   width: 44vw;
+  display: none;
 }
 
 #okBtn, #cancelBtn {

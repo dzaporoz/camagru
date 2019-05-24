@@ -24,4 +24,14 @@
                 <input name="description" id='description' type="text" maxlength="200" size="50" placeholder="Add image description..."/>
         </form>
     </div>
+    <div id="onlays">
+        <?php
+            echo "<img id=\"no-onlay\" class=\"onlay\" src=\"/public/img/default/no-frame.png\" />";
+            $images = glob('./public/onlays/*.png');
+            foreach ($images as $onlay) {
+                $onlay = ltrim($onlay, ".");
+                echo "<img class=\"onlay\" src=\"/public/img/default/1px.png\" style=\"background-image: url('$onlay');\" />";
+            }
+        ?>
+    </div>
 </div>
