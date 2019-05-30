@@ -11,9 +11,10 @@
     </div>
     <div id="myOnlineCamera">
         <input type="file" name="file" id="file" class="inputfile" accept="image/*" />
-        <video>Webcam preview is not supported</video>
+        <video id = "video">Webcam preview is not supported</video>
         <label for="file"><div id="video-error">It seems that your browser doesn't support work with webcam or webcam not found. You can only load an existing image.</div></label>
-        <canvas></canvas>
+        <canvas id="main-canvas"></canvas>
+        <canvas id="onlay-canvas"></canvas>
         <input type="image" id="photoBtn" class="buttons" alt="take a photo" src="/public/img/default/1px.png">
         <label for="file"><img id="loadBtn" class="buttons" alt="load a photo" src="/public/img/default/1px.png"></label>
         <input type="image" id="okBtn" class="buttons" alt="ok" src="/public/img/default/1px.png">
@@ -27,9 +28,8 @@
     <div id="onlays">
         <?php
             echo "<img id=\"no-onlay\" class=\"onlay\" src=\"/public/img/default/no-frame.png\" />";
-            $images = glob('./public/onlays/*.png');
-            foreach ($images as $onlay) {
-                $onlay = ltrim($onlay, ".");
+            $onlays = New FilesystemIterator('public/onlays', FilesystemIterator::UNIX_PATHS);
+            foreach ($onlays as $onlay) {
                 echo "<img class=\"onlay\" src=\"/public/img/default/1px.png\" style=\"background-image: url('$onlay');\" />";
             }
         ?>

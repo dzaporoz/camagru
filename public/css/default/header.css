@@ -1,10 +1,3 @@
-#header-corner img {
-  
-  width: 2vw;
-}
-
-
-
 #menu-bar {  
   width: 95vw;
   margin: auto;
@@ -39,7 +32,6 @@
   color: #E7E5E5;
   text-decoration: none;
   display: block;
-  padding: 6px 20px 6px 20px;
   margin: 0;
   margin-bottom: 6px;
   border-radius: 10px;
@@ -82,16 +74,16 @@
   -moz-border-radius: 0;
   text-shadow: 2px 2px 3px #FFFFFF;
 }
-/*#menu-bar li:hover > ul {
+#menu-bar li:hover > ul {
   display: block;
-}*/
+}
 #menu-bar ul {
   background: #DDDDDD;
   background: linear-gradient(top,  #FFFFFF,  #CFCFCF);
   background: -ms-linear-gradient(top,  #FFFFFF,  #CFCFCF);
   background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#CFCFCF));
   background: -moz-linear-gradient(top,  #FFFFFF,  #CFCFCF);
-/* display: none;*/
+display: none;
   margin: 0;
   padding: 0;
   width: 8vw;
@@ -133,18 +125,57 @@
   height: 1%;
 }
 
+/*
 .side-menu 
 { 
    display: none;
 
-} 
-#header-corner:focus ~ .side-menu, 
-#header-corner:active ~ .side-menu, 
-.side-menu:hover 
+} */
+
+#header-logo img {
+  background-image: url("/public/img/default/logo.svg");
+  background-color: white;
+  background-size: 100% 100%;
+  background-position: 0 0;
+  width: 4vw;
+  height: 3vw;
+}
+
+#header-logo img:hover {
+  background-image: url("/public/img/default/logo-hover.svg");
+  background-color: white;
+}
+
+#header-name img {
+  background-image: url("/public/img/default/camagru.png");
+  background-size: 100% 100%;
+  background-position: 0 0;
+  width: 8vw;
+  height: 3vw;
+}
+
+#header-corner:hover ~ ul,
+#header-corner:focus ~ ul, 
+#header-corner:active ~ ul, 
+#header-corner:focus-within ~ ul,
+.ul:hover
 { 
-   display: block; 
+  display: block; 
+} 
+
+.side-menu:hover
+{ 
+  display: block; 
 } 
 
 .err-msg {
-  background-color: red;
+  position: absolute;
+  right: 4vw;
+  bottom: 4vh;
+  padding: 2%;
+  background-color: #ff5a5b;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  cursor: pointer;
 }

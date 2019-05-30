@@ -32,6 +32,14 @@
   display: none;
 }
 
+canvas {
+  position: absolute; left: 0; top: 0; z-index: 0;
+}
+
+#onlay-canvas {
+  z-index: 1;
+}
+
 #video-error {
   background-color: gray;
   color: white;
@@ -71,6 +79,7 @@
   cursor: pointer;
   display: none;
   bottom: 10%;
+  z-index: 5;
 }
 
 #description {

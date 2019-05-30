@@ -1,7 +1,15 @@
+function $(x) {return document.getElementById(x);}
+
 var error = false,
 image = new Image(),
 frame = new Image(),
-onlay = new Image();
+onlay = new Image(),
+isDraggable = false,
+onlayCanvas,
+onlayContext,
+onlayScale = 1,
+currentX = 0,
+currentY = 0;
 
 frame.setAttribute('is-visible', 'false');
 onlay.setAttribute('is-visible', 'false');
@@ -17,6 +25,10 @@ if (document.readyState !== 'loading') {
 
 function prepareScripts() {
   launchVideo();
+
+  onlayCanvas = document.querySelector('#onlay-canvas');
+  onlayContext = onlayCanvas.getContext('2d');
+  
 
   document.querySelector("input[type=file]").addEventListener("change", loadPhoto);
   document.addEventListener('click', function (event) {
@@ -70,7 +82,7 @@ function launchVideo() {
 
 
 function getImageData(source) {
-  var canvas = document.querySelector('canvas'),
+  var canvas = $('main-canvas'),
   context = canvas.getContext('2d'),
   sourceWidth, sourceHeight;
 
@@ -135,6 +147,8 @@ function applyOnlay(element) {
     renderPhoto();
   } else {
     onlay.setAttribute('is-visible', 'true');
+    currentX = (onlayCanvas.width - onlay.width) / 2;
+    currentY = (onlayCanvas.height - onlay.height) / 2;
     var style = element.currentStyle || window.getComputedStyle(element, false),
       bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
     onlay.src = bi;
@@ -155,13 +169,15 @@ function applyFrame(element) {
 }
 
 function renderPhoto() {
-  var canvas = document.querySelector('canvas'),
+  var canvas = $('main-canvas'),
   context = canvas.getContext("2d"),
   width = 1024, height = 768,
   startX, startY, endX, endY;
 
   canvas.width = width;
   canvas.height = height;
+  onlayCanvas.width = width;
+  onlayCanvas.height = height;
 
   if (frame.getAttribute('is-visible') == 'true') {
     startX = width * 0.07;
@@ -174,69 +190,96 @@ function renderPhoto() {
     endY = height;
   }
   context.drawImage(image, startX, startY, endX, endY);
-  
   if (onlay.getAttribute('is-visible') == 'true') {
-
-    alert('onlWidth - '+onlay.width+
-    '\nonlHeig - '+onlay.height+
-    '\nonlMult -' + (canvas.width * 0.4) / onlay.width +
-    'onlWidth - '+onlay.width * (canvas.width * 0.4) / onlay.width +
-    '\nonlHeig - '+onlay.height * (canvas.width * 0.4) / onlay.width);
-    
-    var onlayMult = (canvas.width * 0.4) / onlay.width;
-    onlay.width *= onlayMult;
-    onlay.height *= onlayMult; 
-    onlayX = Math.random() * (+(endX - onlay.width) - +startX) + +startX;
-    onlayY = Math.random() * (+(endY - onlay.height) - +startY) + +startY;
-
-    alert('onlWidth - '+onlay.width+
-    '\nonlHeig - '+onlay.height+
-    '\nonlX - '+onlayX+
-    '\nonlY - '+onlayY+
-    '\nendX -' +endX+
-    '\nendY -' +endY);
-
-    context.drawImage(onlay, onlayX, onlayY, onlay.width + onlayX, onlayY + onlay.height );
+    showDragableOnlay();
   }
   if (frame.getAttribute('is-visible') == 'true') {
     context.drawImage(frame, 0, 0, width, height);
   }
 }
 
+function showDragableOnlay() {
+  var rect, mouseX, mouseY, modifX, modifY, click;
+
+  onlayCanvas.onmousedown = function(e) {
+    click = true;
+    rect = this.getBoundingClientRect();
+    mouseX = onlayCanvas.width * (e.pageX - rect.left) / rect.width;
+    mouseY = onlayCanvas.height * (e.pageY - rect.top) / rect.height;
+    if (mouseX >= (currentX) && mouseX <= (currentX + onlay.width) &&
+        mouseY >= (currentY) && mouseY <= (currentY + onlay.height)) {
+      modifX = mouseX - currentX;
+      modifY = mouseY - currentY;
+      isDraggable = true;
+    }
+  };
+  onlayCanvas.onmouseup = function(e) {
+    isDraggable = false;
+    if(click) {
+      if (onlayScale >= 2) {
+        onlayScale = 1;
+      } else {
+        onlayScale += 0.1;
+      }
+    }
+  };
+  onlayCanvas.onmouseout = function(e) {
+    isDraggable = false;
+  };
+  onlayCanvas.onmousemove = function(e) {
+    click = false;
+    if (isDraggable) {
+        mouseX = onlayCanvas.width * (e.pageX - rect.left) / rect.width;
+        mouseY = onlayCanvas.height * (e.pageY - rect.top) / rect.height;
+        currentX = mouseX - modifX;
+        currentY = mouseY - modifY;
+     }
+  };
+  setInterval(function() {
+    onlayContext.clearRect(0, 0, onlayCanvas.width, onlayCanvas.height);
+    onlayContext.drawImage(onlay, currentX, currentY, onlay.width * onlayScale, onlay.height * onlayScale);
+  }, 1000/30);
+}
+
 function changeInterface(toVideoScreen) {
   if (toVideoScreen) {
     if (!error) {
-      document.querySelector('video').style.display = "block";
-      document.querySelector('#photoBtn').style.display = "block";
+      $('video').style.display = "block";
+      $('photoBtn').style.display = "block";
     } else {
-      document.querySelector('#video-error').style.display = "block";  
-      document.querySelector('video').style.display = "none";
-      document.querySelector('#photoBtn').style.display = "none";
+      $('video-error').style.display = "block";
+      $('video').style.display = "none";
+      $('photoBtn').style.display = "none";
     }
-    document.querySelector('#loadBtn').style.display = "block";
-    document.querySelector('#okBtn').style.display = "none";
-    document.querySelector('#cancelBtn').style.display = "none";
-    document.querySelector('canvas').style.display = "none";
-    document.querySelector('#frames').style.visibility = "hidden";
-    document.querySelector('#onlays').style.visibility = "hidden";
-    document.querySelector('#description').style.display = "none";
+    $('loadBtn').style.display = "block";
+    $('okBtn').style.display = "none";
+    $('cancelBtn').style.display = "none";
+    $('main-canvas').style.display = "none";
+    $('onlay-canvas').style.display = "none";
+    $('frames').style.visibility = "hidden";
+    $('onlays').style.visibility = "hidden";
+    $('description').style.display = "none";
   } else {
     frame.setAttribute('is-visible', 'false');
-    document.querySelector('#photoBtn').style.display = "none";
-    document.querySelector('#loadBtn').style.display = "none";
-    document.querySelector('video').style.display = "none";
-    document.querySelector('#video-error').style.display = "none";
-    document.querySelector('canvas').style.display = "block";
-    document.querySelector('#okBtn').style.display = "block";
-    document.querySelector('#cancelBtn').style.display = "block";
-    document.querySelector('#frames').style.visibility = "visible";
-    document.querySelector('#onlays').style.visibility = "visible";
-    document.querySelector('#description').style.display = "block";
+    $('photoBtn').style.display = "none";
+    $('loadBtn').style.display = "none";
+    $('video').style.display = "none";
+    $('video-error').style.display = "none";
+    $('onlay-canvas').style.display = "block";
+    $('main-canvas').style.display = "block";
+    $('okBtn').style.display = "block";
+    $('cancelBtn').style.display = "block";
+    $('frames').style.visibility = "visible";
+    $('onlays').style.visibility = "visible";
+    $('description').style.display = "block";
   }
 }
 
 function post() {
-  var canvas = document.querySelector("canvas");
+  var canvas = document.querySelector("#main-canvas");
+  if (onlay.getAttribute('is-visible') == 'true') {
+    canvas.getContext('2d').drawImage(onlayCanvas, 0, 0);
+  }
   var dataURL = canvas.toDataURL("image/png");
   document.getElementById('hidden_data').value = dataURL;
   var fd = new FormData(document.forms["uploading-form"]);
