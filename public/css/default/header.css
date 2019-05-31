@@ -169,7 +169,7 @@ display: none;
 } 
 
 .err-msg {
-  position: absolute;
+  position: fixed;
   right: 4vw;
   bottom: 4vh;
   padding: 2%;

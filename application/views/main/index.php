@@ -4,17 +4,9 @@
 <div id="feedLoad">
 </div>
 <div id="post-window">
-    <img id="post-image" src="/public/img/default/1px.png" />
-    <div id="post-data">
-        <a id="post-author" href="javascript:void(0)">test1</a>
-        <img id="delete-post" class="delete" src="/public/img/default/1px.png" />
-        <div id="post-likes">
-            <span>X</span>
-            <img id="like-post" class="liked" src="/public/img/default/1px.png" />
-        </div>    
-        <span id="post-description"></span>
-    </div>
-    <img id="close-post" src="/public/img/default/1px.png" />
+    <div>
+        <img id="post-image" src="/public/img/default/1px.png" />
+
     <?php
     if (!isset($_SESSION['uid'])) {
         echo '<span>only registered users can leave comments</span>';
@@ -27,8 +19,21 @@
 COMMENTFORM;
     }
     ?>
+</div>
+    <div id="post-data">
+        <a id="post-author" href="javascript:void(0)">test1</a>
+        <img id="delete-post" class="delete" src="/public/img/default/1px.png" />
+        <div id="post-likes">
+            <span>X</span>
+            <img id="like-post" class="liked" src="/public/img/default/1px.png" />
+        </div>    
+        <span id="post-description"></span>
+        
     <span id="post-comments-num"></span>
     <div id="post-comments">
     </div>
+    <img id="close-post" src="/public/img/default/1px.png" />
+    </div>
 </div>
+
 <div id="overlay"></div>

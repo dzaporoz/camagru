@@ -155,7 +155,7 @@ function openPost(element) {
   scroll = document.body.scrollTop || window.scrollY,
   imageId = getPostId(element);
   post.style.display = "flex";
-  post.style.top = scroll + 50 + 'px';
+  post.style.top = scroll + 70 + 'px';
   if (!element.className.match(/(?:^|\s)element(?!\S)/) && element.parentElement) {
     element = element.parentElement;
     if (!element.className.match(/(?:^|\s)element(?!\S)/) && element.parentElement) {
@@ -327,4 +327,5 @@ function errorMsg(msgString) {
   msgBox.innerHTML = msgString;
   msgBox.className = "err-msg";
   msgBox.style.display = "block";
+  msgBox.style.opacity = "1";
 }
