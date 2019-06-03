@@ -11,17 +11,36 @@ class AccountController extends Controller {
             $this->view->redirect('/');
             exit();
         }
-        $vars = array('corner' => '<a href="/account/login">Log in</a>');
+        $vars = array('corner' => '<a href="/account/login">Log in</a>',
+        'scripts' => array('register.js'),
+        'styles' => array('account.css'));
         if (empty($_POST)) {
             $this->view->render('Register page', $vars);
         } else {
-            $result = $this->model->register($_POST['username'], $_POST['password'], $_POST['email']);    
-            if (!$result) {
-                $vars['msg'] = 'Error. Try again';
-                $this->view->render('Register page', $vars);
+            $result = null;
+            if (!isset($_POST['username']) || !isset($_POST['password']) || !isset($_POST['email'])) {
+                $vars['msg'] = 'Data incomplete. Registration failed';
+            } elseif (strlen($_POST['username']) < 4) {
+                $vars['msg'] = 'User login cannot be shorter than 4 characters';
+            } elseif (strlen($_POST['password']) < 6) {
+                $vars['msg'] = 'Password cannot be shorter than 6 characters';
+            } elseif (!preg_match('/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/', $_POST['email'])) {
+                $vars['msg'] = 'E-mail has wrong format';
+            } elseif (!preg_match('/^[a-zA-Z0-9\-_]{4,16}$/', $_POST['username'])) {
+                $vars['msg'] = 'Username has invalid characters';
+            } else {
+                $result = $this->model->register($_POST['username'], $_POST['password'], $_POST['email']);
+                if (!$result) {
+                    $vars['msg'] = 'Database error. Try again';
+                } elseif ($result === true) {
+                    $this->view->redirect('/account/login');
+                } else {
+                    $vars['msg'] = $result;
+                    $result = null;
+                }
             }
-            else {
-                $this->view->redirect('/account/login');
+            if (!$result) {
+                $this->view->render('Register page', $vars);
             }
         }
     }

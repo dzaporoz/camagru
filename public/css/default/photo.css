@@ -84,7 +84,12 @@ canvas {
 
 #description {
   width: 44vw;
+  margin: auto;
   display: none;
+  resize: none;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 #okBtn, #cancelBtn {
@@ -96,22 +101,22 @@ canvas {
 }
 
 #photoBtn {
-  left: 41%;
+  left: 42%;
   background-image: url("/public/img/default/photo.svg");
 }
 
 #loadBtn {
-  left: 56%;
+  left: 52%;
   background-image: url("/public/img/default/load.svg");
 }
 
 #okBtn {
-  left: 41%;
+  left: 42%;
   background-image: url("/public/img/default/ok.svg")
 }
 
 #cancelBtn {
-  left: 56%;
+  left: 52%;
   background-image: url("/public/img/default/cancel.svg")
 }
 

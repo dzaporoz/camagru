@@ -230,6 +230,9 @@
   width: 98.5%; 
   font-size: 1vw;
   border:solid 1px black;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 #post-comments-num {

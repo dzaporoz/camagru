@@ -19,11 +19,6 @@
         <label for="file"><img id="loadBtn" class="buttons" alt="load a photo" src="/public/img/default/1px.png"></label>
         <input type="image" id="okBtn" class="buttons" alt="ok" src="/public/img/default/1px.png">
         <input type="image" id="cancelBtn" class="buttons" alt="cancel" src="/public/img/default/1px.png">
-        <form action="/photo/load" method="post" enctype="multipart/form-data" accept-charset="utf-8" name="uploading-form">
-                <input name="MAX_FILE_SIZE" type="hidden" value="20971520" />        
-                <input name="hidden_data" id='hidden_data' type="hidden"/>
-                <input name="description" id='description' type="text" maxlength="200" size="50" placeholder="Add image description..."/>
-        </form>
     </div>
     <div id="onlays">
         <?php
@@ -35,3 +30,8 @@
         ?>
     </div>
 </div>
+<form action="/photo/load" method="post" enctype="multipart/form-data" accept-charset="utf-8" name="uploading-form">
+    <input name="MAX_FILE_SIZE" type="hidden" value="20971520" />
+    <input name="hidden_data" id='hidden_data' type="hidden"/>
+    <textarea name="description" id='description' maxlength="200" placeholder="Add image description..."></textarea>
+</form>

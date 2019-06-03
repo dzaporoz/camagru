@@ -10,7 +10,11 @@ class Db {
 
     public function __construct() {
         $config = require 'application/config/db.php';
-        $this->db = new PDO("mysql:host={$config['host']};dbname={$config['dbname']}", $config['user'], $config['password']);
+        try {
+            $this->db = new PDO("mysql:host={$config['host']};dbname={$config['dbname']}", $config['user'], $config['password']);
+        } catch (\PDOException $e) {
+            die ('Unable to connect to the database');
+        }
     }
   
     public function query($sql, $params = []) {

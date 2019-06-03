@@ -21,7 +21,7 @@ class Account extends Model {
         $sql = 'SELECT uid FROM users WHERE username = :username OR email = :email';
         $params = array('username' => $login, 'email' => $email);
         if ($this->db->row($sql, $params)) {
-            return false;
+            return 'The user with the same login or e-mail is already exist.';
         } else {
             $hash = hash('whirlpool', $password);
             $sql = 'INSERT INTO users (username,password,email) VALUES ( :username, :password, :email)';
