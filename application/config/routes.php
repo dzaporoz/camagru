@@ -27,6 +27,16 @@ return [
         'action' => 'register',
     ],
 
+    'account/verify' => [
+        'controller' => 'account',
+        'action' => 'verify',
+    ],
+
+    'account/restore' => [
+        'controller' => 'account',
+        'action' => 'restore',
+    ],
+
     'settings' => [
         'controller' => 'settings',
         'action' => 'show',

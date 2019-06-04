@@ -12,8 +12,8 @@ class AccountController extends Controller {
             exit();
         }
         $vars = array('corner' => '<a href="/account/login">Log in</a>',
-        'scripts' => array('register.js'),
-        'styles' => array('account.css'));
+            'scripts' => array('register.js'),
+            'styles' => array('account.css'));
         if (empty($_POST)) {
             $this->view->render('Register page', $vars);
         } else {
@@ -33,7 +33,8 @@ class AccountController extends Controller {
                 if (!$result) {
                     $vars['msg'] = 'Database error. Try again';
                 } elseif ($result === true) {
-                    $this->view->redirect('/account/login');
+                    $this->sendConfirmLetter($_POST['username'], $_POST['password'], $_POST['email']);
+                    //                $this->view->redirect('/account/login');
                 } else {
                     $vars['msg'] = $result;
                     $result = null;
@@ -45,6 +46,19 @@ class AccountController extends Controller {
         }
     }
 
+    public function verifyAction() {
+        if(!isset($_GET['email']) || !isset($_GET['hash']) || !$this->model->verifyUser($_GET['email'], $_GET['hash'])) {
+            $vars['message'] = "Incorrect verification link. Please try again to follow this link from your email";
+        } else {
+            if (!isset($_SESSION['uid'])) {
+                $vars['message'] = "Your account has been activated, you can login now";
+            } else {
+                $vars['message'] = "Your account has been activated, you have full access to all features now";
+            }
+        }
+        $this->view->render('Verification page', $vars);
+    }
+
     public function loginAction() {
         $vars = array('corner' => '<a href="/account/register">Register</a>');
         if (isset($_SESSION['uid'])) {
@@ -52,7 +66,7 @@ class AccountController extends Controller {
             exit();
         }
         if (!empty($_POST)) {
-            $result = $this->model->login($_POST['username'], $_POST['password']);    
+            $result = $this->model->login($_POST['username'], $_POST['password']);
             if (!$result) {
                 $vars['msg'] = 'Wrong pasword';
                 $this->view->render('Login page', $vars);
@@ -72,5 +86,137 @@ class AccountController extends Controller {
         }
         $this->view->redirect('/');
         exit();
+    }
+
+    public function restoreAction() {
+        $vars = array();
+
+        $startForm = <<<EMAIL_FORM
+<form id="form" action="/account/restore" method="post">
+Please type in your e-mail. The password recovery instructions will be sent on it.
+<p>E-mail*</p>
+<p><input id="email" type="email" name="email"></p>
+<p><button id="button" type="submit">Send recovery letter</button></p>
+</form>
+EMAIL_FORM;
+        $incorrectForm = <<<INCORRECT_FORM
+<div id=\"form\">
+Error occured. Try again or follow this link from your email again
+</div>
+INCORRECT_FORM;
+
+        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
+            $email = filter_input(INPUT_POST, 'email');
+            $hash = filter_input(INPUT_POST, 'hash');
+            $password = filter_input(INPUT_POST, 'password');
+
+            if ($email && $hash && $password) {
+                if ($this->model->updatePassword($email, $hash, $password)) {
+                    $vars['form'] = "<div id=\"form\">
+Password was changed successfully. You can login now.
+</div>";
+                } else {
+                    $vars['form'] = $incorrectForm;
+                }
+            } elseif ($email) {
+                if ($this->model->confirmUserByEmail($email)) {
+                    $this->sendRecoveryLetter($email);
+                    $vars["form"] = "<div id=\"form\">
+E-mail with recovery instructions was sent on $email. 
+Please check your e-mail.</div>";
+                } else {
+                    $vars["form"] = $startForm;
+                    $vars['msg'] = "User with this e-mail unexist. Try again";
+                }
+            } else {
+                $vars['form'] = $incorrectForm;
+            }
+        } elseif (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'GET') {
+            $email = filter_input(INPUT_GET, 'email');
+            $hash = filter_input(INPUT_GET, 'hash');
+
+            if (!$email && !$hash) {
+                $vars["form"] = $startForm;
+            } elseif ($this->model->verifyUser($email, $hash)) {
+                $vars['form'] = <<<PASSWORD_RECOVERY_FORM
+<form id="form" action="/account/restore" method="post">
+Please type your new password and it confirmation in bellowing fields:
+<p>Password* (6 characters minimum)</p>
+<p><input id="password" type="password" name="password" minlength="4" maxlength="20"></p>
+<div class="hint" id="passwordhint"> </div>
+<p>Password confirmation*</p>
+<p><input id="confirmation" type="password" name="confirmation"></p>
+<div class="hint" id="confirmationhint"> </div>
+<p><button id="button" type="submit" >Recover</button></p>
+<input type="hidden" name="email" value="{$_GET['email']}">
+<input type="hidden" name="hash" value="{$_GET['hash']}">
+</form>
+PASSWORD_RECOVERY_FORM;
+            } else {
+                $vars['form'] = $incorrectForm;
+            }
+        }
+
+        $vars['styles'] = array('account.css');
+        $this->view->render('Password recovering page', $vars);
+    }
+
+    protected function sendRecoveryLetter($email) {
+        if ($hashData = $this->model->getUserHash($email)) {
+            $subject = "Pasword recovery for Camagru user";
+            $message = <<< MESSAGE
+Good day!<br>
+You receive this letter because of password recovery procedure was initiated on Camagru project.<br>
+If you didn't do any actions for register - just ignore this letter.<br>
+-----<br>
+Please follow this link to move to password recovery page:<br>
+http://localhost:8080/account/restore?email=$email&hash={$hashData["hash"]}<br>
+MESSAGE;
+            $this->sendEmail($email, $subject, $message);
+        }
+    }
+
+
+    protected function sendConfirmLetter($login, $password, $email) {
+        if ($hashData = $this->model->getUserHash($login)) {
+
+
+            $subject = "Confirm registration to Camagru project";
+            $message = <<< MESSAGE
+Good day!
+You receive this letter because of registration to Camagroo project.
+If you didn't do any actions for register - just ignore this letter.
+------------------------
+Username: $login
+Password: $password
+------------------------
+Please follow this link to activate your account:
+http://localhost:8080/account/verify?email=$email&hash={$hashData["hash"]}
+MESSAGE;
+            $this->sendEmail($email, $subject, $message);
+        }
+    }
+
+    protected function sendEmail($recipient, $mail_subject, $mail_message) {
+        $encoding = "utf-8";
+        $sender_mail = "dzaporoz@student.unit.ua";
+        $preferences = array(
+            "input-charset" => $encoding,
+            "output-charset" => $encoding,
+            "line-length" => 76,
+            "line-break-chars" => "\r\n"
+        );
+
+        $header = "Content-type: text/html; charset=$encoding \r\n";
+        $header .= "From: $sender_mail \r\n";
+        $header .= "MIME-Version: 1.0 \r\n";
+        $header .= "Content-Transfer-Encoding: 8bit \r\n";
+        $header .= "Date: ".date("r (T)")." \r\n";
+        $header .= iconv_mime_encode("Subject", $mail_subject, $preferences);
+        $result = mail($recipient, $mail_subject, $mail_message, $header);
+        var_dump($result);
+        if (!$result) {
+            echo error_get_last()['message'];
+        }
     }
 }

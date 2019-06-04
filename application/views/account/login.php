@@ -4,5 +4,6 @@
     <p><input type="text" name="username" maxlength="16"></p>
     <p>Password</p>
     <p><input type="password" name="password" maxlength="20"></p>
+    <a href="/account/restore">Forgot password?</a>
     <p><button type="submit">Log in</button></p>
 </form>

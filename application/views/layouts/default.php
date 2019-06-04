@@ -1,8 +1,5 @@
 <?php
     if (isset($_SESSION['uid'])) {
-        if ($user_logo == NULL) {
-            $user_logo = '/public/img/default/no-photo.png';
-        } 
         $corner = <<<REGISTERED
         <li id="header-corner"><a href="javascript:void(0);" >$username</a>
         

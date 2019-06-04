@@ -84,6 +84,7 @@ CREATE TABLE `users` (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `user_logo` varchar(255) DEFAULT NULL,
   `email_confirmed` tinyint(1) NOT NULL DEFAULT '0',
+  `hash` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`uid`),
   UNIQUE KEY `uid_UNIQUE` (`uid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
