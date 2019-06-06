@@ -1,4 +1,6 @@
-var LoadedImgs = 0, getData = parseGetData();
+var LoadedImgs = 0,
+    getData = parseGetData(),
+    href = window.location;
 
 if( document.readyState !== 'loading' ) {
   initializeFeed()
@@ -33,7 +35,6 @@ function initializeFeed() {
     } else if (event.target.id == 'add-comment') {
       addComment();
     }
-      
   }, false);
 
   document.addEventListener('scroll', function (event) {
@@ -43,6 +44,7 @@ function initializeFeed() {
         loadFeed();
     }
   });
+
   loadFeed();  
 }
 

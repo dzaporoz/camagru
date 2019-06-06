@@ -305,7 +305,7 @@ function post() {
 };
 
 function errorMsg(msgString) {
-  msgBox = document.getElementById("msg");
+  msgBox = $("msg");
   msgBox.innerHTML = msgString;
   msgBox.className = "err-msg";
   msgBox.style.display = "block";

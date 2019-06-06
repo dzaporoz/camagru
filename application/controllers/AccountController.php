@@ -12,7 +12,7 @@ class AccountController extends Controller {
             exit();
         }
         $vars = array('corner' => '<a href="/account/login">Log in</a>',
-            'scripts' => array('register.js'),
+            'scripts' => array('formCheck.js'),
             'styles' => array('account.css'));
         if (empty($_POST)) {
             $this->view->render('Register page', $vars);

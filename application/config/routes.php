@@ -42,6 +42,21 @@ return [
         'action' => 'show',
     ],
 
+    'settings/change-email' => [
+        'controller' => 'settings',
+        'action' => 'changeEmail',
+    ],
+
+    'settings/change-username' => [
+        'controller' => 'settings',
+        'action' => 'changeUsername',
+    ],
+
+    'settings/change-password' => [
+        'controller' => 'settings',
+        'action' => 'changePassword',
+    ],
+
     'photo' => [
         'controller' => 'photo',
         'action' => 'add',

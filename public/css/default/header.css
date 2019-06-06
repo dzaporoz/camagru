@@ -125,13 +125,6 @@ display: none;
   height: 1%;
 }
 
-/*
-.side-menu 
-{ 
-   display: none;
-
-} */
-
 #header-logo img {
   background-image: url("/public/img/default/logo.svg");
   background-color: white;
@@ -168,14 +161,27 @@ display: none;
   display: block; 
 } 
 
-.err-msg {
+
+#msg {
   position: fixed;
+  max-width: 40vw;
   right: 4vw;
   bottom: 4vh;
   padding: 2%;
-  background-color: #ff5a5b;
   border-radius: 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   cursor: pointer;
+  overflow-wrap: break-word;
+}
+
+.err-msg {
+  background-color: #ff5a5b;
+  color:black;
+}
+
+.done-msg {
+
+  background-color: forestgreen;
+  color: white;
 }
