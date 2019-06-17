@@ -57,6 +57,11 @@ return [
         'action' => 'changePassword',
     ],
 
+    'settings/change-notif' => [
+        'controller' => 'settings',
+        'action' => 'changeNotif',
+    ],
+
     'photo' => [
         'controller' => 'photo',
         'action' => 'add',

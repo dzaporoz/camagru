@@ -55,4 +55,12 @@ class Settings extends Model {
             return $this->db->query($sql, $params);
         }
     }
+
+    public function updateNotif($uid, $action)
+    {
+        $status = ($action == "check") ? "1" : "0";
+        $sql = 'UPDATE users SET send_notif = :status WHERE uid = :uid';
+        $params = array('status' => $status, 'uid' => $uid);
+        return $this->db->query($sql, $params);
+    }
 }

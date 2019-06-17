@@ -34,7 +34,7 @@ class AccountController extends Controller {
                     $vars['msg'] = 'Database error. Try again';
                 } elseif ($result === true) {
                     $this->sendConfirmLetter($_POST['username'], $_POST['password'], $_POST['email']);
-                    //                $this->view->redirect('/account/login');
+                    $this->view->redirect('/account/login');
                 } else {
                     $vars['msg'] = $result;
                     $result = null;

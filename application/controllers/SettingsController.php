@@ -71,4 +71,19 @@ class SettingsController extends Controller {
             }
         }
     }
+
+    public function changeNotifAction()
+    {
+        if (!isset($_SESSION['uid'])) {
+            echo "Unable to identificate user, Please, try login again";
+        } elseif (!isset($_POST['action']) || ($_POST['action'] != 'check' && $_POST['action'] != 'uncheck')) {
+            echo "Invalid data. Please, try again";
+        } else {
+            if ($this->model->updateNotif($_SESSION['uid'], $_POST['action'])) {
+                echo 'ok';
+            } else {
+                echo 'unable to change database row. Please try again later';
+            }
+        }
+    }
 }

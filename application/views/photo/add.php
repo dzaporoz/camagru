@@ -1,3 +1,4 @@
+<h1>Creating a new post</h1>
 <div id="flexbox">
     <div id="frames">
         <?php

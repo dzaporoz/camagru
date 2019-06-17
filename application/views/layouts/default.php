@@ -1,14 +1,14 @@
 <?php
     if (isset($_SESSION['uid'])) {
         $corner = <<<REGISTERED
-        <li id="header-corner"><a href="javascript:void(0);" >$username</a>
-        
+        <li id="header-corner"><a href="/?uid={$_SESSION['uid']}" >$username</a>
+            <ul class="side-menu">
+                <li><a href="/photo">Add a photo</a></li>
+                <li><a href="/settings">Settings</a></li>
+                <li><a href="/account/logout">Log out</a></li>
+            </ul>
         </li>
-        <ul class="side-menu">
-            <li><a href="/photo">Add a photo</a></li>
-            <li><a href="/settings">Settings</a></li>
-            <li><a href="/account/logout">Log out</a></li>
-        </ul>
+        
 REGISTERED;
     } else {
         $corner = <<<UNREGISTERED
@@ -34,7 +34,6 @@ UNREGISTERED;
         <a id="header-name" href="/"><img src="/public/img/default/1px.png" /></a> 
     <?php echo $corner ?>
     </ul>
-    <h1 style="margin-top: 4vw;">Posting a photo</h1>
     <div id="msg" class="err-msg" <?php if(!isset($msg)) echo 'style="display:none"' ?>>
         <?php if(isset($msg)) echo $msg ?>
     </div>

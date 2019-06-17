@@ -1,4 +1,4 @@
-<p>Main page</p>
+<h1>Latest posts</h1>
 <div id="feed">
 </div>
 <div id="feedLoad">

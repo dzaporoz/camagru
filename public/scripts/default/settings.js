@@ -22,22 +22,49 @@ function prepareScripts() {
 }
 
 function changeNotif() {
-    let property,
-        button = $('notifChangeButton')
-        result;
-    if (button.className.match(/(?:^|\s)checked(?!\S)/)) {
-        button.className = button.className.replace(/(?:^|\s)checked(?!\S)/g , '');
-        property = "unchecked";
+    let action,
+        button = $('notifChangeButton');
+    if (button.className.match(/(?:^|\s)check(?!\S)/)) {
+ //       button.className = button.className.replace(/(?:^|\s)check(?!\S)/g , '');
+        action = "uncheck";
     } else {
-        button.className = button.className.replace(/(?:^|\s)unchecked(?!\S)/g , '');
-        property = "checked";
+   //     button.className = button.className.replace(/(?:^|\s)uncheck(?!\S)/g , '');
+        action = "check";
     }
-    button.className += " " + property;
-    result = XMLHTTPQuery('/settings/change-notif', 'property=')
-
-
+ //   button.className += " " + action;
+    XMLHTTPQuery('/settings/change-notif', 'action=' + action).then( function() {
+        if (action == "uncheck") {
+            button.className = button.className.replace(/(?:^|\s)check(?!\S)/g , '');
+        } else {
+            button.className = button.className.replace(/(?:^|\s)uncheck(?!\S)/g , '');
+        }
+        button.className += " " + action;
+    }).catch(errorMsg);
 }
 
+
+
+
+function XMLHTTPQuery(url, params) {
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                resolve (xhr.responseText);
+            } else if (this.status !== 200) {
+                serverError();
+                reject(new Error(this.statusText));
+            }
+        }
+        xhr.ontimeout = function () { serverError(); reject(new Error(this.statusText)); };
+        xhr.onerror = function () { serverError(); reject(new Error(this.statusText)); };
+        xhr.send(params);
+    });
+}
+
+/*
 function XMLHTTPQuery(url, params) {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', url, true);
@@ -51,7 +78,7 @@ function XMLHTTPQuery(url, params) {
     xhr.onerror = serverError();
     xhr.send(params);
 }
-
+*/
 function validateOldPassword(event) {
     if (event.target.value.length < 6) {
         event.target.style.borderColor = 'red';

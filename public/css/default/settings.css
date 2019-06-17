@@ -28,19 +28,19 @@
 
 
 
-.checked {
+.check {
   background-image: url("/public/img/default/checked.svg");
 }
 
-.checked:hover {
+.check:hover {
   background-image: url("/public/img/default/checked-hover.svg");
 }
 
-.unchecked {
+.uncheck {
   background-image: url("/public/img/default/unchecked.svg");
 }
 
-.unchecked:hover {
+.uncheck:hover {
   background-image: url("/public/img/default/unchecked-hover.svg");
 }
 

@@ -36,7 +36,7 @@
             <div class="hint" id="emailhint"> </div>
             <input type="image" id="emailChangeBtn" class="buttons ok" alt="change login" src="/public/img/default/1px.png">
             <h3>Send notifications about new comments</h3>
-            <input type="image" id="notifChangeButton" class="buttons <?php echo ($send_notif) ? 'checked' : 'unchecked' ?>" alt="change login" src="/public/img/default/1px.png">
+            <input type="image" id="notifChangeButton" class="buttons <?php echo ($send_notif) ? 'check' : 'uncheck' ?>" alt="change login" src="/public/img/default/1px.png">
         </div>
     </div>
 
