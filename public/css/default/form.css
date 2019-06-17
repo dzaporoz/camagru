@@ -1,4 +1,4 @@
-#form {
+/*#form {
     background-color: rgb(173, 169, 169);
     margin: auto;
     width: 35vw;
@@ -7,4 +7,115 @@
     -moz-box-shadow: 2px 2px 3px #666666;
     padding: 6px 6px 4px 6px;
     border: solid 1px #6D6D6D;   
+}*/
+
+.form-style-4{
+    margin: auto;
+    width: 30vw;
+    font-size: 2vw;
+    background: #0F0F0F;
+    padding: 30px 30px 15px 30px;
+    border: 5px solid #2B2B2B;
+    box-shadow: 0.4vw 0.4vw 3px #666666;
+    -webkit-box-shadow: 0.4vw 0.4vw 3px #666666;
+    -moz-box-shadow: 0.4vw 0.4vw 3px #666666;
+    min-width: 300px;
+    position: absolute;
+    top: 25vh;
+    left: 35vw;
+}
+
+.form-style-4 p{
+    color: #E7E5E5;
+}
+
+.form-style-4 .hint {
+    color: #ff0000;
+    font-size: 1.5vmin;
+}
+
+.form-style-4 a{
+    color: #2a5886;
+}
+
+.form-style-4 input[type=submit],
+.form-style-4 input[type=button],
+.form-style-4 input[type=text],
+.form-style-4 input[type=email],
+.form-style-4 input[type=password],
+.form-style-4 textarea,
+.form-style-4 label
+{
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 2vmin;
+    color: #fff;
+
+}
+.form-style-4 label {
+    display:block;
+    margin-bottom: 10px;
+}
+.form-style-4 label > span{
+    display: inline-block;
+    float: left;
+    width: 150px;
+}
+.form-style-4 input[type=text],
+.form-style-4 input[type=password],
+.form-style-4 input[type=email]
+{
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed #E7E5E5;
+    width: 95%;
+    outline: none;
+    padding: 0px 0px 0px 0px;
+    font-style: italic;
+}
+.form-style-4 textarea{
+    font-style: italic;
+    padding: 0px 0px 0px 0px;
+    background: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 1px dashed #E7E5E5;
+    width: 95%;
+    overflow: hidden;
+    resize:none;
+    height:20px;
+}
+
+.form-style-4 textarea:focus,
+.form-style-4 input[type=text]:focus,
+.form-style-4 input[type=email]:focus,
+.form-style-4 input[type=password]:focus,
+.form-style-4 input[type=email] :focus
+{
+    border-bottom: 1px dashed #D9FFA9;
+}
+
+.form-style-4 input[type=submit],
+.form-style-4 input[type=button],
+.form-style-4 button{
+    background: #576E86;
+    border: none;
+    padding: 8px 10px 8px 10px;
+    border-radius: 5px;
+    color: #A8BACE;
+    height: 4vw;
+    font-size: 2vmin;
+    color: white;
+    margin: auto;
+}
+.form-style-4 input[type=submit]:hover,
+.form-style-4 input[type=button]:hover,
+.form-style-4 button:hover{
+    background: #394D61;
+}
+
+.form-style-4 input[type=submit]:disabled,
+.form-style-4 input[type=button]:disabled,
+.form-style-4 button:disabled{
+    background: #666666;
+    color: gray;
 }

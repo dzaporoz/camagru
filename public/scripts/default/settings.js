@@ -25,13 +25,10 @@ function changeNotif() {
     let action,
         button = $('notifChangeButton');
     if (button.className.match(/(?:^|\s)check(?!\S)/)) {
- //       button.className = button.className.replace(/(?:^|\s)check(?!\S)/g , '');
         action = "uncheck";
     } else {
-   //     button.className = button.className.replace(/(?:^|\s)uncheck(?!\S)/g , '');
         action = "check";
     }
- //   button.className += " " + action;
     XMLHTTPQuery('/settings/change-notif', 'action=' + action).then( function() {
         if (action == "uncheck") {
             button.className = button.className.replace(/(?:^|\s)check(?!\S)/g , '');
@@ -64,21 +61,6 @@ function XMLHTTPQuery(url, params) {
     });
 }
 
-/*
-function XMLHTTPQuery(url, params) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', url, true);
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState === 4 && xhr.status === 200) {
-            return (xhr.responseText);
-        }
-    }
-    xhr.ontimeout = serverError();
-    xhr.onerror = serverError();
-    xhr.send(params);
-}
-*/
 function validateOldPassword(event) {
     if (event.target.value.length < 6) {
         event.target.style.borderColor = 'red';

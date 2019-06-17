@@ -1,6 +1,6 @@
 var LoadedImgs = 0,
     getData = parseGetData(),
-    href = window.location;
+    href = window.location.href;
 
 if( document.readyState !== 'loading' ) {
   initializeFeed()
@@ -45,7 +45,15 @@ function initializeFeed() {
     }
   });
 
-  loadFeed();  
+  if (getData && getData['img_id']) {
+    while (document.querySelector('.element [image_id="'+ getData['img_id'] + '"]') == null && loadFeed()) {
+      if (document.querySelector('.element [image_id="'+ getData['img_id'] + '"]')) {
+        openPost(document.querySelector('.element [image_id="'+ getData['img_id'] + '"]'));
+      }
+    }
+  } else {
+    loadFeed();
+  }
 }
 
 function addLike (button)
@@ -151,11 +159,16 @@ function openPost(element) {
   }
   xhr.send(params);
 */
-
+  if (element == null) {
+    errorMsg('Error occured. Reload page and try again');
+    return;
+  }
   document.querySelector('#overlay').style.display = "block";
-  var post = document.querySelector('#post-window'),
-  scroll = document.body.scrollTop || window.scrollY,
-  imageId = getPostId(element);
+  let post = document.querySelector('#post-window'),
+      scroll = document.body.scrollTop || window.scrollY,
+      currentGetData = "?",
+      ampersand = false,
+      imageId = getPostId(element);
   post.style.display = "flex";
   post.style.top = scroll + 70 + 'px';
   if (!element.className.match(/(?:^|\s)element(?!\S)/) && element.parentElement) {
@@ -163,6 +176,18 @@ function openPost(element) {
     if (!element.className.match(/(?:^|\s)element(?!\S)/) && element.parentElement) {
       element = element.parentElement;
     }
+  }
+  if (getData) {
+    for (let prop in getData) {
+      if (ampersand) {
+        currentGetData += '&';
+      }
+      currentGetData += prop + "=" + getData[prop];
+      ampersand = true;
+    }
+  }
+  if (!getData || !getData['img_id']) {
+    window.history.pushState("", "", ((getData) ? (currentGetData + '&') : ('/?')) + 'img_id=' + imageId);
   }
   document.querySelector('#post-window').setAttribute('image_id', imageId);
   document.querySelector('#post-image').style.backgroundImage = element.style.backgroundImage;
@@ -182,6 +207,14 @@ function closePost() {
   document.querySelector('#overlay').style.display = "none";
   document.querySelector('#post-window').style.display = "none";
   document.querySelector('#comment-text').value = "";
+  if (getData && getData['img_id']) {
+    if (getData['uid']) {
+      href = href.split("?")[0] + '?uid=' + getData['uid'];
+    } else {
+      href = href.split("?")[0];
+    }
+  }
+  window.history.pushState("", "", href);
 }
 
 function addComment() {
@@ -277,7 +310,7 @@ function loadFeed() {
       if (response == "") {
         LoadedImgs = -1;
         loadIcon.style.display = "none";
-        return;
+        return false;
       }
       var givenImages = parseInt(response);
       if (givenImages == 9) {
@@ -288,6 +321,7 @@ function loadFeed() {
       response = response.substring(response.indexOf("<"));
       feed.innerHTML = feed.innerHTML + response;  
       loadIcon.style.display = "none";
+      return true;
     }
   }
   xhr.send(params);

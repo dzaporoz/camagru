@@ -92,16 +92,16 @@ class AccountController extends Controller {
         $vars = array();
 
         $startForm = <<<EMAIL_FORM
-<form id="form" action="/account/restore" method="post">
-Please type in your e-mail. The password recovery instructions will be sent on it.
+<form id="form" class="form-style-4" action="/account/restore" method="post">
+<p>Please type in your e-mail. The password recovery instructions will be sent on it.</p>
 <p>E-mail*</p>
 <p><input id="email" type="email" name="email"></p>
 <p><button id="button" type="submit">Send recovery letter</button></p>
 </form>
 EMAIL_FORM;
         $incorrectForm = <<<INCORRECT_FORM
-<div id=\"form\">
-Error occured. Try again or follow this link from your email again
+<div id=\"form\" class="form-style-4">
+<p>Error occured. Try again or follow this link from your email again</p>
 </div>
 INCORRECT_FORM;
 
@@ -112,8 +112,8 @@ INCORRECT_FORM;
 
             if ($email && $hash && $password) {
                 if ($this->model->updatePassword($email, $hash, $password)) {
-                    $vars['form'] = "<div id=\"form\">
-Password was changed successfully. You can login now.
+                    $vars['form'] = "<div id=\"form\" class='form-style-4'>
+<p>Password was changed successfully. You can login now.</p>
 </div>";
                 } else {
                     $vars['form'] = $incorrectForm;
@@ -121,8 +121,8 @@ Password was changed successfully. You can login now.
             } elseif ($email) {
                 if ($this->model->confirmUserByEmail($email)) {
                     $this->sendRecoveryLetter($email);
-                    $vars["form"] = "<div id=\"form\">
-E-mail with recovery instructions was sent on $email. 
+                    $vars["form"] = "<div id=\"form\" class='form-style-4'>
+<p>E-mail with recovery instructions was sent on $email.</p> 
 Please check your e-mail.</div>";
                 } else {
                     $vars["form"] = $startForm;
@@ -140,7 +140,7 @@ Please check your e-mail.</div>";
             } elseif ($this->model->verifyUser($email, $hash)) {
                 $vars['form'] = <<<PASSWORD_RECOVERY_FORM
 <form id="form" action="/account/restore" method="post">
-Please type your new password and it confirmation in bellowing fields:
+<p>Please type your new password and it confirmation in bellowing fields:</p>
 <p>Password* (6 characters minimum)</p>
 <p><input id="password" type="password" name="password" minlength="4" maxlength="20"></p>
 <div class="hint" id="passwordhint"> </div>

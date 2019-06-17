@@ -1,5 +1,5 @@
-<h3 style="margin-top: 4vw;">Log in</h3>
-<form id="form" action="/account/login" method="post">
+<h1>Log into your account or <a href="/account/register">register</a></h1>
+<form id="form" class="form-style-4" action="/account/login" method="post">
     <p>Login</p>
     <p><input type="text" name="username" maxlength="16"></p>
     <p>Password</p>

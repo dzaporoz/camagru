@@ -1,5 +1,5 @@
-<h3>Registration</h3>
-<form id="form" action="/account/register" method="post">
+<h1>Registration to Camagru project</h1>
+<form id="form" class="form-style-4" action="/account/register" method="post">
     <p>Login*</p>
     <p><input id="username" type="text" name="username" minlength="4" maxlength="16"></p>
     <div class="hint" id="usernamehint"></div>

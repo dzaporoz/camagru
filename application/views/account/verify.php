@@ -1,1 +1,1 @@
-<div id="form"><?php echo $message; ?></div>
+<div id="form" class="form-style-4"><?php echo $message; ?></div>
