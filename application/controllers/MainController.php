@@ -116,6 +116,17 @@ FEED_ITEM;
         if (isset($_SESSION['uid'])) {
             if ($this->model->addComment($image_id, $comment_text)) {
                 echo 'ok';
+                if (($mailData = $this->model->getCommentMailData($_SESSION['uid'], $image_id)) && $mailData['email_confirmed'] && $mailData['send_notif']) {
+                    $recipient = $mailData['email'];
+                    $mail_subject = "You have a new comment under your post";
+                    $userData = (isset($mailData['username']) && $mailData['username']) ?
+                        "User <a href=\"\">{$mailData['username']}<a>" : "Some user";
+                    $mail_message = <<< LETTER_TEXT
+$userData leave comment under your post:<br>$comment_text
+LETTER_TEXT;
+                    var_dump($mailData);
+                    die;
+               }
             } else {
                 echo "There is something wrong with our database or image doesn't exist. Please, write us about this error";
             }
@@ -157,6 +168,29 @@ COMMENT;
             echo "The comment_id / user_id pair is enexist";
         } else {
             echo "There is something wrong with our database or image doesn't exist. Please, write us about this error";
+        }
+    }
+
+    protected function sendEmail($recipient, $mail_subject, $mail_message) {
+        $encoding = "utf-8";
+        $sender_mail = "dzaporoz@student.unit.ua";
+        $preferences = array(
+            "input-charset" => $encoding,
+            "output-charset" => $encoding,
+            "line-length" => 76,
+            "line-break-chars" => "\r\n"
+        );
+
+        $header = "Content-type: text/html; charset=$encoding \r\n";
+        $header .= "From: $sender_mail \r\n";
+        $header .= "MIME-Version: 1.0 \r\n";
+        $header .= "Content-Transfer-Encoding: 8bit \r\n";
+        $header .= "Date: ".date("r (T)")." \r\n";
+        $header .= iconv_mime_encode("Subject", $mail_subject, $preferences);
+        $result = mail($recipient, $mail_subject, $mail_message, $header);
+        var_dump($result);
+        if (!$result) {
+            echo error_get_last()['message'];
         }
     }
 }

@@ -23,6 +23,7 @@
     position: absolute;
     top: 25vh;
     left: 35vw;
+    color: #E7E5E5;
 }
 
 .form-style-4 p{
@@ -118,4 +119,9 @@
 .form-style-4 button:disabled{
     background: #666666;
     color: gray;
+}
+
+.comment hr {
+    border-top: 1px dashed #E7E5E5;
+    width: 95%;
 }

@@ -137,4 +137,16 @@ class Main extends Model {
             return $result;
         }
     }
+
+    public function getCommentMailData($uid, $imageId) {
+        $sql = 'SELECT email, email_confirmed, send_notif FROM users WHERE uid=(SELECT uid FROM images WHERE img_id = :img_id)';
+        $params = array('img_id' => $imageId);
+        if ($mailData = $this->db->row($sql, $params)) {
+            $sql = 'SELECT username FROM users WHERE uid= :uid';
+            $params = array('uid' => $uid);
+            return (array_merge($mailData, $this->db->row($sql, $params)));
+        } else {
+            return false;
+        }
+    }
 }

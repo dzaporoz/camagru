@@ -1,7 +1,7 @@
-#main-frame {
-  margin: auto;
-  width: 70vw;
-  background-color: #A1A1A1;
+.settings-form {
+  width: 60vw;
+  left: 20vw;
+  top: 10vw;
 }
 
 .buttons {
@@ -9,6 +9,7 @@
   border: none;
   width: 4vw;
   height: 4vw;
+  background-color: #E7E5E5;
   background-repeat: no-repeat;
   background-size: 4vw 4vw;
   background-position: left top;

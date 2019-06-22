@@ -1,5 +1,5 @@
 <h1>User settings</h1>
-<div id="main-frame">
+<div class="form-style-4 settings-form">
 
     <div>
         <h2>Personal settings</h2>
@@ -10,7 +10,7 @@
             <input type="image" id="usernameChangeBtn" class="buttons ok" alt="change login" src="/public/img/default/1px.png">
         </div>
     </div>
-
+<hr>
     <div>
         <h2>Security settings</h2>
         <div class="settings-block">
@@ -27,7 +27,7 @@
             <input type="image" id="passwordChangeBtn" class="buttons ok" alt="change login" src="/public/img/default/1px.png">
         </div>
     </div>
-
+<hr>
     <div>
         <h2>Contact and notification settings</h2>
         <div class="settings-block">

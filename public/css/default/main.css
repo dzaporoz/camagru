@@ -299,16 +299,4 @@
 .comment hr {
   border-top: 1px dashed black;
   width: 95%;
-/*
-  width: 95%;
-  height: 0.2vw;
-  text-align:center; margin: 0 auto;
-  background-color: black;*/
 }
-/*
-#post-window hr {
-  color: white;
-  background-color: white;
-  height: 5px;
-  vertical-align: top;
-}*/
