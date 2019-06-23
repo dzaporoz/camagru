@@ -120,12 +120,11 @@ FEED_ITEM;
                     $recipient = $mailData['email'];
                     $mail_subject = "You have a new comment under your post";
                     $userData = (isset($mailData['username']) && $mailData['username']) ?
-                        "User <a href=\"\">{$mailData['username']}<a>" : "Some user";
+                        "User <a href=\"http://{$_SERVER['HTTP_HOST']}/?uid={$_SESSION['uid']}\">{$mailData['username']}</a>" : "Some user";
                     $mail_message = <<< LETTER_TEXT
-$userData leave comment under your post:<br>$comment_text
+$userData leave comment under your post:<br><i>$comment_text</i>
 LETTER_TEXT;
-                    var_dump($mailData);
-                    die;
+                    $this->sendEmail($recipient, $mail_subject, $mail_message);
                }
             } else {
                 echo "There is something wrong with our database or image doesn't exist. Please, write us about this error";
@@ -188,7 +187,6 @@ COMMENT;
         $header .= "Date: ".date("r (T)")." \r\n";
         $header .= iconv_mime_encode("Subject", $mail_subject, $preferences);
         $result = mail($recipient, $mail_subject, $mail_message, $header);
-        var_dump($result);
         if (!$result) {
             echo error_get_last()['message'];
         }

@@ -187,6 +187,7 @@ display: none;
   -moz-border-radius: 10px;
   cursor: pointer;
   overflow-wrap: break-word;
+  z-index: 999;
 }
 
 .err-msg {

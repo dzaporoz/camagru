@@ -98,6 +98,7 @@
 }
 
 .elementData .elementTitle {
+  font-size: 1.5vw;
   position: absolute;
   top: 3vw;
   padding: 1vw;

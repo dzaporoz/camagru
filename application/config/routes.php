@@ -32,6 +32,11 @@ return [
         'action' => 'verify',
     ],
 
+    'account/re-send-verification-letter' => [
+        'controller' => 'account',
+        'action' => 'reSendVerificationLetter',
+    ],
+
     'account/restore' => [
         'controller' => 'account',
         'action' => 'restore',

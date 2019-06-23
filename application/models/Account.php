@@ -56,4 +56,12 @@ class Account extends Model {
         $params = array('email' => $email, 'hash' => $hash, 'password' => hash('whirlpool', $password));
         return $this->db->query($sql, $params);
     }
+
+    public function getReverificationData($uid)
+    {
+        if (!$uid) {return false; }
+        $sql = 'SELECT email, hash, email_confirmed FROM users WHERE uid = :uid';
+        $params = array('uid' => $uid);
+        return $this->db->row($sql, $params);
+    }
 }

@@ -31,6 +31,12 @@
     <div>
         <h2>Contact and notification settings</h2>
         <div class="settings-block">
+            <?php
+            if (!$email_confirmed) {
+                echo "<div class=\"hint\">Your e-mail is not verified. Please, follow a confirmaiton link in letter to verify your e-mail.</div><br>";
+                echo "<a id=\"resendNotif\" href=\"JavaScript:Void(0);\">Re-send activation letter</a>";
+            }
+            ?>
             <h3>Change e-mail:</h3>
             <input id="email" type="email" name="email" value="<?php echo $email; ?>">
             <div class="hint" id="emailhint"> </div>

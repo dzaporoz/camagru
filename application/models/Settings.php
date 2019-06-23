@@ -50,7 +50,7 @@ class Settings extends Model {
         if ($this->db->row($sql, $params)) {
             return false;
         } else {
-            $sql = 'UPDATE users SET email = :email WHERE uid = :uid';
+            $sql = 'UPDATE users SET email = :email, email_confirmed = 0 WHERE uid = :uid';
             $params['uid'] = $uid;
             return $this->db->query($sql, $params);
         }

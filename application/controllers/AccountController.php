@@ -46,6 +46,27 @@ class AccountController extends Controller {
         }
     }
 
+    public function reSendVerificationLetterAction() {
+        if (!isset($_SESSION['uid'])) {
+            exit('This option available only for logged in users');
+        } elseif (!($data = $this->model->getReverificationData($_SESSION['uid']))) {
+            exit('Wrong data. Please login again and press the link');
+        } elseif (isset($data['email_confirmed']) && $data['email_confirmed']) {
+            exit('You have already confirmed your e-mail');
+        }
+        $subject = "Confirm registration to Camagru project";
+        $message = <<< MESSAGE
+Good day!
+You receive this letter because someone request to send verification letter again.
+If you didn't do any actions - just ignore this letter.
+
+Please follow this link to activate your account:
+http://{$_SERVER['HTTP_HOST']}/account/verify?email={$data['email']}&hash={$data["hash"]}
+MESSAGE;
+        $this->sendEmail($data['email'], $subject, $message);
+        echo 'ok';
+    }
+
     public function verifyAction() {
         if(!isset($_GET['email']) || !isset($_GET['hash']) || !$this->model->verifyUser($_GET['email'], $_GET['hash'])) {
             $vars['message'] = "Incorrect verification link. Please try again to follow this link from your email";
@@ -214,7 +235,6 @@ MESSAGE;
         $header .= "Date: ".date("r (T)")." \r\n";
         $header .= iconv_mime_encode("Subject", $mail_subject, $preferences);
         $result = mail($recipient, $mail_subject, $mail_message, $header);
-        var_dump($result);
         if (!$result) {
             echo error_get_last()['message'];
         }

@@ -16,6 +16,9 @@ function prepareScripts() {
             changeEmail();
         } else if (event.target.id === "notifChangeButton") {
             changeNotif();
+        } else if (event.target.id === "resendNotif") {
+            event.preventDefault();
+            resendNotif(event.target);
         }
     }, false);
     $('oldpassword').addEventListener('input', function(e) { validateOldPassword(e); });
@@ -37,6 +40,24 @@ function changeNotif() {
         }
         button.className += " " + action;
     }).catch(errorMsg);
+}
+
+function resendNotif(link) {
+    if (link.className == 'disabled') {
+        errorMsg('You must wait a minute to send a new verification letter');
+    } else {
+        XMLHTTPQuery('/account/re-send-verification-letter', 'action=' + 123321).then(function (response) {
+            if (response === 'ok') {
+                doneMsg("Reverification letter was sent. Please check your mail");
+                link.className = "disabled";
+                setTimeout(function () {
+                    link.className = '';
+                }, 60000);
+            } else {
+                errorMsg(response);
+            }
+        }).catch(errorMsg);
+    }
 }
 
 
