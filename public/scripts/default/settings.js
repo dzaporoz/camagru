@@ -60,9 +60,6 @@ function resendNotif(link) {
     }
 }
 
-
-
-
 function XMLHTTPQuery(url, params) {
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();

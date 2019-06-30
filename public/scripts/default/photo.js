@@ -9,7 +9,8 @@ onlayCanvas,
 onlayContext,
 onlayScale = 1,
 currentX = 0,
-currentY = 0;
+currentY = 0,
+frameURL, onlayURL;
 
 frame.setAttribute('is-visible', 'false');
 onlay.setAttribute('is-visible', 'false');
@@ -79,7 +80,6 @@ function launchVideo() {
     changeInterface(true);
   });
 }
-
 
 function getImageData(source) {
   var canvas = $('main-canvas'),
@@ -155,6 +155,7 @@ function applyOnlay(element) {
     var style = element.currentStyle || window.getComputedStyle(element, false),
       bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
     onlay.src = bi;
+    onlayURL = bi;
   }
 }
 
@@ -168,6 +169,7 @@ function applyFrame(element) {
       bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
       bi = bi.replace(/preview\// , "");
     frame.src = bi;
+    frameURL = bi;
   }
 }
 
@@ -290,6 +292,23 @@ function post() {
   var dataURL = canvas.toDataURL("image/png");
   $('hidden_data').value = dataURL;
   var fd = new FormData(document.forms["uploading-form"]);
+  if (frame.getAttribute('is-visible') == 'true') {
+    fd.set('frame', 'true');
+    fd.set('frameURL', onlayURL);
+  } else {
+    fd.set('frame', '');
+  }
+
+  if (onlay.getAttribute('is-visible') == 'true') {
+    fd.set('onlay', 'true');
+    fd.set('onlayScale', onlayScale);
+    fd.set('onlayX', currentX);
+    fd.set('onlayY', currentY);
+    fd.set('onlayURL', onlayURL);
+  } else {
+    fd.set('onlay', '');
+  }
+
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (this.readyState == 4) {

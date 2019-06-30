@@ -122,7 +122,7 @@ MESSAGE;
 EMAIL_FORM;
         $incorrectForm = <<<INCORRECT_FORM
 <div id=\"form\" class="form-style-4">
-<p>Error occured. Try again or follow this link from your email again</p>
+<p>Error occured. Try again or follow this link from your e-mail again</p>
 </div>
 INCORRECT_FORM;
 
@@ -143,7 +143,7 @@ INCORRECT_FORM;
                 if ($this->model->confirmUserByEmail($email)) {
                     $this->sendRecoveryLetter($email);
                     $vars["form"] = "<div id=\"form\" class='form-style-4'>
-<p>E-mail with recovery instructions was sent on $email.</p> 
+<p>Letter with recovery instructions was sent on $email (in case if e-mail is verified)</p> 
 Please check your e-mail.</div>";
                 } else {
                     $vars["form"] = $startForm;

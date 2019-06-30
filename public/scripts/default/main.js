@@ -186,10 +186,6 @@ function openPost(element) {
       }
 
     }
-    //if (!getData || !imageIdGet) {
-   // else {
-
-    //}
     window.history.pushState("", "", ((getData) ? (currentGetData + '&') : ('/?')) + 'img_id=' + imageId);
   }
 
