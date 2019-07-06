@@ -20,6 +20,7 @@ UNREGISTERED;
 <html>
 <head>
     <title><?php echo $title ?></title>
+    <link rel="shortcut icon" href="/public/img/default/favicon.png" />
     <link rel="stylesheet" href="/public/css/default/header.css">
     <link rel="stylesheet" href="/public/css/default/form.css">
     <script type="text/javascript" src="/public/scripts/default/layout.js" async></script>

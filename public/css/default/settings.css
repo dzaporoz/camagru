@@ -1,7 +1,11 @@
 .settings-form {
   width: 60vw;
-  left: 20vw;
+  max-width: 500px;
+  position: static;
+  margin: auto;
+/*  left: 20vw;
   top: 10vw;
+ */
 }
 
 .buttons {

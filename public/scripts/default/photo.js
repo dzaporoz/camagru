@@ -1,6 +1,6 @@
 function $(x) {return document.getElementById(x);}
 
-var error = false,
+let error = false,
 image = new Image(),
 frame = new Image(),
 onlay = new Image(),
@@ -52,7 +52,7 @@ function launchVideo() {
   if (navigator.mediaDevices === undefined) { navigator.mediaDevices = {}; }
   if (navigator.mediaDevices.getUserMedia === undefined) {
     navigator.mediaDevices.getUserMedia = function(constraints) {
-      var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+      let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
       if (!getUserMedia) {
         return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
       }
@@ -63,7 +63,7 @@ function launchVideo() {
   }
   navigator.mediaDevices.getUserMedia({ audio: false, video: true })
   .then(function(stream) {
-    var video = document.querySelector('video');
+    let video = document.querySelector('video');
     if ("srcObject" in video) {
       video.srcObject = stream;
     } else {
@@ -82,7 +82,7 @@ function launchVideo() {
 }
 
 function getImageData(source) {
-  var canvas = $('main-canvas'),
+  let canvas = $('main-canvas'),
   context = canvas.getContext('2d'),
   sourceWidth, sourceHeight;
 
@@ -96,7 +96,7 @@ function getImageData(source) {
 
   canvas.width = 1024;
   canvas.height = 768;
-  var canvasRatio = canvas.width / canvas.height,
+  let canvasRatio = canvas.width / canvas.height,
       contentRatio = sourceWidth / sourceHeight,
       x, y, finalHeight, finalWidth;
     if (contentRatio < canvasRatio) {
@@ -121,7 +121,7 @@ function getImageData(source) {
 }
 
 function loadPhoto() {
-  var file = document.querySelector('input[type=file]').files[0],
+  let file = document.querySelector('input[type=file]').files[0],
       reader = new FileReader(),
       tempImg = new Image();
   
@@ -152,7 +152,7 @@ function applyOnlay(element) {
     currentX = (onlayCanvas.width - onlay.width) / 2;
     currentY = (onlayCanvas.height - onlay.height) / 2;
     onlayScale = 1;
-    var style = element.currentStyle || window.getComputedStyle(element, false),
+    let style = element.currentStyle || window.getComputedStyle(element, false),
       bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
     onlay.src = bi;
     onlayURL = bi;
@@ -165,7 +165,7 @@ function applyFrame(element) {
     renderPhoto();
   } else {
     frame.setAttribute('is-visible', 'true');
-    var style = element.currentStyle || window.getComputedStyle(element, false),
+    let style = element.currentStyle || window.getComputedStyle(element, false),
       bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
       bi = bi.replace(/preview\// , "");
     frame.src = bi;
@@ -174,7 +174,7 @@ function applyFrame(element) {
 }
 
 function renderPhoto() {
-  var canvas = $('main-canvas'),
+  let canvas = $('main-canvas'),
   context = canvas.getContext("2d"),
   width = 1024, height = 768,
   startX, startY, endX, endY;
@@ -204,7 +204,7 @@ function renderPhoto() {
 }
 
 function showDragableOnlay() {
-  var rect, mouseX, mouseY, modifX, modifY, click;
+  let rect, mouseX, mouseY, modifX, modifY, click;
 
   onlayCanvas.onmousedown = function(e) {
     e.preventDefault();
@@ -212,8 +212,8 @@ function showDragableOnlay() {
     rect = this.getBoundingClientRect();
     mouseX = onlayCanvas.width * (e.pageX - rect.left) / rect.width;
     mouseY = onlayCanvas.height * (e.pageY - rect.top) / rect.height;
-    if (mouseX >= (currentX) && mouseX <= (currentX + onlay.width) &&
-        mouseY >= (currentY) && mouseY <= (currentY + onlay.height)) {
+    if (mouseX >= (currentX) && mouseX <= (currentX + onlay.width * onlayScale) &&
+        mouseY >= (currentY) && mouseY <= (currentY + onlay.height * onlayScale)) {
       modifX = mouseX - currentX;
       modifY = mouseY - currentY;
       isDraggable = true;
@@ -222,6 +222,7 @@ function showDragableOnlay() {
   onlayCanvas.onmouseup = function(e) {
     isDraggable = false;
     if(click) {
+console.log(onlayScale);
       if (onlayScale >= 2) {
         onlayScale = 1;
       } else {
@@ -243,7 +244,7 @@ function showDragableOnlay() {
   };
   setInterval(function() {
     onlayContext.clearRect(0, 0, onlayCanvas.width, onlayCanvas.height);
-    if (onlay.getAttribute('is-visible') == 'true') {
+    if (onlay.getAttribute('is-visible') === 'true') {
       onlayContext.drawImage(onlay, currentX, currentY, onlay.width * onlayScale, onlay.height * onlayScale);
     }
   }, 1000/30);
@@ -284,21 +285,19 @@ function changeInterface(toVideoScreen) {
 }
 
 function post() {
-  $('loadBtn').style.display = "none";
-  var canvas = document.querySelector("#main-canvas");
-  if (onlay.getAttribute('is-visible') == 'true') {
-    canvas.getContext('2d').drawImage(onlayCanvas, 0, 0);
-  }
-  var dataURL = canvas.toDataURL("image/png");
+  $('okBtn').style.display = "none";
+  $('cancelBtn').style.display = "none";
+  let canvas = $("main-canvas");
+  canvas.getContext('2d').drawImage(frame, 0, 0, canvas.width, canvas.height);
+  let dataURL = canvas.toDataURL("image/png");
   $('hidden_data').value = dataURL;
-  var fd = new FormData(document.forms["uploading-form"]);
+  let fd = new FormData(document.forms["uploading-form"]);
   if (frame.getAttribute('is-visible') == 'true') {
     fd.set('frame', 'true');
-    fd.set('frameURL', onlayURL);
+    fd.set('frameURL', frameURL);
   } else {
     fd.set('frame', '');
   }
-
   if (onlay.getAttribute('is-visible') == 'true') {
     fd.set('onlay', 'true');
     fd.set('onlayScale', onlayScale);
@@ -308,8 +307,7 @@ function post() {
   } else {
     fd.set('onlay', '');
   }
-
-  var xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (this.readyState == 4) {
       if (this.status == 200 && xhr.responseText == 'ok') {
@@ -321,7 +319,7 @@ function post() {
   };
   xhr.open('POST', '/photo/load', true);
   xhr.send(fd);
-};
+}
 
 function errorMsg(msgString) {
   msgBox = $("msg");

@@ -26,11 +26,23 @@
             echo "<img id=\"no-onlay\" class=\"onlay\" src=\"/public/img/default/no-frame.png\" />";
             $onlays = New FilesystemIterator('public/onlays', FilesystemIterator::UNIX_PATHS);
             foreach ($onlays as $onlay) {
-                echo "<img class=\"onlay\" src=\"/public/img/default/1px.png\" style=\"background-image: url('$onlay');\" />";
+                if (pathinfo($onlay)['extension'] == 'png') {
+                    echo "<img class=\"onlay\" src=\"/public/img/default/1px.png\" style=\"background-image: url('$onlay');\" />";
+                }
             }
         ?>
     </div>
 </div>
+<?php if ($posts):?>
+<h2 align="center">Latest posts</h2>
+<div class="posts">
+    <?php
+    foreach ($posts as $post) {
+        echo "<a href=\"http://{$_SERVER['HTTP_HOST']}\?uid={$_SESSION['uid']}&img_id={$post['img_id']}\"><img src=\"{$post['img_url']}\" /></a>";
+    }
+    ?>
+</div>
+<?php endif; ?>
 <form action="/photo/load" method="post" enctype="multipart/form-data" accept-charset="utf-8" name="uploading-form">
     <input name="MAX_FILE_SIZE" type="hidden" value="20971520" />
     <input name="hidden_data" id='hidden_data' type="hidden"/>

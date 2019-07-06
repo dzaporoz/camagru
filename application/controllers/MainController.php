@@ -68,6 +68,8 @@ FEED_ITEM;
     protected function addLike($image_id) {
         if (!isset($_SESSION['uid'])) {
             die ('Only registered users can like images');
+        } elseif ($_SESSION['verified_user'] != 1) {
+            die('Please first confirm your registration to like posts.');
         }
         if ($this->model->addLike($image_id)) {
             echo "ok";
@@ -114,6 +116,9 @@ FEED_ITEM;
 
     protected function addComment($comment_text, $image_id) {
         if (isset($_SESSION['uid'])) {
+            if ($_SESSION['verified_user'] != 1) {
+                die('Please first confirm your registration to leave comments under posts.');
+            }
             if ($this->model->addComment($image_id, $comment_text)) {
                 echo 'ok';
                 if (($mailData = $this->model->getCommentMailData($_SESSION['uid'], $image_id)) && $mailData['email_confirmed'] && $mailData['send_notif']) {

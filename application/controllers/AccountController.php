@@ -89,11 +89,12 @@ MESSAGE;
         if (!empty($_POST)) {
             $result = $this->model->login($_POST['username'], $_POST['password']);
             if (!$result) {
-                $vars['msg'] = 'Wrong pasword';
+                $vars['msg'] = 'Wrong login/pasword';
                 $this->view->render('Login page', $vars);
             }
             else {
                 $_SESSION['uid'] = $result['uid'];
+                $_SESSION['verified_user'] = $result['email_confirmed'];
                 $this->view->redirect('/');
             }
         } else {

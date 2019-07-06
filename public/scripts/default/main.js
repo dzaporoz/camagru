@@ -217,7 +217,7 @@ function closePost() {
     }
   }
   window.history.pushState("", "", href);
-  if (getData['img_id']) {
+  if (getData && getData['img_id']) {
     delete getData["img_id"];
     if (!getData['uid']) {
       getData = null;

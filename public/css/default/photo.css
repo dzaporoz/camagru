@@ -19,6 +19,19 @@
   background-size: 100%;
 }
 
+.posts {
+  margin: auto;
+  margin-top: 20px;
+  width: 79vw;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.posts img {
+  height: 20vw;
+  width: auto;
+}
+
 #myOnlineCamera {
   overflow: auto;
   position: relative;

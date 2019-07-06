@@ -8,7 +8,7 @@ class Account extends Model {
 
     public function login($login, $password) {
         $hash = hash('whirlpool', $password);
-        $sql = 'SELECT uid FROM users WHERE username = :username AND password = :password';
+        $sql = 'SELECT uid, email_confirmed FROM users WHERE username = :username AND password = :password';
         $params = array('username' => $login, 'password' => $hash);
         return $this->db->row($sql, $params);
     }

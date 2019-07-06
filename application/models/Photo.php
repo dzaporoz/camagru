@@ -25,4 +25,10 @@ class Photo extends Model {
         return $this->db->insert($sql, $params);    
     }
 
+    public function getPosts()
+    {
+        $sql = "SELECT images.img_id, images.uid, images.img_url FROM images WHERE images.uid = :uid";
+        $params = array('uid' => $_SESSION['uid']);
+        return $this->db->table($sql, $params);
+    }
 }

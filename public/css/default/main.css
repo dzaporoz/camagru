@@ -20,7 +20,9 @@
 
 .element {
   width: 24vw;
+  min-width: 300px;            /*mobile adaptive*/
   height: 18vw;
+  min-height: 225px;            /*mobile adaptive*/
   margin: 0.5vw;
   background-repeat: no-repeat;
   background-origin: padding-box;
@@ -39,6 +41,8 @@
 .elementData {
   width: 24vw;
   height: 18vw;
+  min-width: 300px;            /*mobile adaptive*/
+  min-height: 225px;            /*mobile adaptive*/
   display: none;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
@@ -55,6 +59,8 @@
 .elementData .likes img {
   width: 3vw;
   height: 3vw;
+  min-width: 45px;            /*mobile adaptive*/
+  min-height: 45px;            /*mobile adaptive*/
   background-repeat: no-repeat;
   margin: 0;
   padding: 0;
@@ -63,6 +69,8 @@
 
 .unliked {
   background-image: url("/public/img/default/unliked.svg");
+  background-color: white;
+  border-radius: 50%;
 }
 
 .unliked:hover {
