@@ -114,15 +114,15 @@ MESSAGE;
         $vars = array();
 
         $startForm = <<<EMAIL_FORM
-<form id="form" class="form-style-4" action="/account/restore" method="post">
-<p>Please type in your e-mail. The password recovery instructions will be sent on it.</p>
-<p>E-mail*</p>
-<p><input id="email" type="email" name="email"></p>
-<p><button id="button" type="submit">Send recovery letter</button></p>
+<form id="form" action="/account/restore" method="post">
+<p><span>Please type in your e-mail. The password recovery instructions will be sent on it.</span></p>
+<p><input id="email" type="email" name="email" placeholder="e-mail" required="required"></p>
+<a href="/account/login">Return to login page</a>
+<p><button id="button" type="submit" class="btn btn-primary btn-block btn-large">Send recovery letter</button></p>
 </form>
 EMAIL_FORM;
         $incorrectForm = <<<INCORRECT_FORM
-<div id=\"form\" class="form-style-4">
+<div id=\"form\" class="forme">
 <p>Error occured. Try again or follow this link from your e-mail again</p>
 </div>
 INCORRECT_FORM;
@@ -134,8 +134,8 @@ INCORRECT_FORM;
 
             if ($email && $hash && $password) {
                 if ($this->model->updatePassword($email, $hash, $password)) {
-                    $vars['form'] = "<div id=\"form\" class='form-style-4'>
-<p>Password was changed successfully. You can login now.</p>
+                    $vars['form'] = "<div id=\"form\" class='forme'>
+<p>Password was changed successfully. You can <a href='/account/login'>login</a> now.</p>
 </div>";
                 } else {
                     $vars['form'] = $incorrectForm;
@@ -143,7 +143,7 @@ INCORRECT_FORM;
             } elseif ($email) {
                 if ($this->model->confirmUserByEmail($email)) {
                     $this->sendRecoveryLetter($email);
-                    $vars["form"] = "<div id=\"form\" class='form-style-4'>
+                    $vars["form"] = "<div id=\"form\" class='forme'>
 <p>Letter with recovery instructions was sent on $email (in case if e-mail is verified)</p> 
 Please check your e-mail.</div>";
                 } else {

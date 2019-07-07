@@ -2,9 +2,8 @@
 <div class="form-style-4 settings-form">
 
     <div>
-        <h2>Personal settings</h2>
+        <h2>Username changing</h2>
         <div class="settings-block">
-            <h3>Change login:</h3>
             <input id="username" type="text" name="username" minlength="4" maxlength="16" value="<?php echo $username; ?>">
             <div class="hint" id="usernamehint"></div>
             <input type="image" id="usernameChangeBtn" class="buttons ok" alt="change login" src="/public/img/default/1px.png">
@@ -12,16 +11,12 @@
     </div>
 <hr>
     <div>
-        <h2>Security settings</h2>
+        <h2>Password changing</h2>
         <div class="settings-block">
-            <h3>Change password:</h3>
-            <p>Old password:</p>
-            <input id="oldpassword" type="password" name="oldpassword" minlength="4" maxlength="20">
-            <p>New password (6 characters minimum)</p>
-            <p><input id="password" type="password" name="password" minlength="4" maxlength="20"></p>
+            <input id="oldpassword" type="password" name="oldpassword" minlength="4" maxlength="20" placeholder="Your old password" required="required">
+            <p><input id="password" type="password" name="password" minlength="4" maxlength="20" placeholder="New password (6 chars minimum)" required="required"></p>
+            <p><input id="confirmation" type="password" name="confirmation" placeholder="New password confirmation" required="required"></p>
             <div class="hint" id="passwordhint"> </div>
-            <p>Password confirmation*</p>
-            <p><input id="confirmation" type="password" name="confirmation"></p>
             <div class="hint" id="confirmationhint"> </div>
             <br>
             <input type="image" id="passwordChangeBtn" class="buttons ok" alt="change login" src="/public/img/default/1px.png">

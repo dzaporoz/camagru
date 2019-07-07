@@ -8,14 +8,29 @@
  */
 }
 
+h2, h3 {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0,0,0,0.3);
+  letter-spacing:1px;
+  text-align:center;
+}
+
+.hint {
+  font-size: 14px;
+}
+
+a {
+  color: #fff;
+}
+
 .buttons {
   clear: both;
   border: none;
-  width: 4vw;
-  height: 4vw;
+  width: 40px;
+  height: 40px;
   background-color: #E7E5E5;
   background-repeat: no-repeat;
-  background-size: 4vw 4vw;
+  background-size: 40px 40px;
   background-position: left top;
   cursor: pointer;
   display: inline;
@@ -56,5 +71,4 @@
 
 .hint {
   color: red;
-  height: 2vw;
 }
