@@ -12,17 +12,20 @@
 
 #feed {
   margin: auto;
-  width: 76vw;
+/*  width: 76vw; */
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
+  overflow: visible;
 }
 
 .element {
   width: 24vw;
   min-width: 300px;            /*mobile adaptive*/
+  max-width: 440px;
   height: 18vw;
   min-height: 225px;            /*mobile adaptive*/
+  max-height: 330px;
   margin: 0.5vw;
   background-repeat: no-repeat;
   background-origin: padding-box;
@@ -39,8 +42,8 @@
 }
 
 .elementData {
-  width: 24vw;
-  height: 18vw;
+  width: 100%;
+  height: 100%;
   min-width: 300px;            /*mobile adaptive*/
   min-height: 225px;            /*mobile adaptive*/
   display: none;
@@ -308,4 +311,47 @@
 .comment hr {
   border-top: 1px dashed black;
   width: 95%;
+}
+
+@media screen and (min-width: 2000px) {
+  #feed {
+    width: 95vw;
+  }
+}
+
+@media screen and (min-width: 1233px) {
+  #feed {
+    width: 95vw;
+  }
+}
+
+
+@media screen and (min-width: 612px) {
+  #feed {
+    width: 95vw;
+  }
+}
+
+@media (min-width: 100px) and (max-width: 611px) {
+  #feed {
+    width: 95vw;
+  }
+  .element {
+    width: 90vw;
+    height: 67.5vw;
+    max-width: none;
+    max-height: none;
+  }
+}
+
+@media (max-device-width: 415px) {
+  #feed {
+    width: 95vw;
+  }
+  .element {
+    width: 90vw;
+    height: 67.5vw;
+    max-width: none;
+    max-height: none;
+  }
 }

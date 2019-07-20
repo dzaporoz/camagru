@@ -44,5 +44,8 @@ UNREGISTERED;
         <?php if(isset($msg)) echo $msg ?>
     </div>
     <?php echo $content; ?>
+    <div class="footer">
+        <p>Camagru project. Made by Dmytro Zaporozhchenko for School42</p>
+    </div>
 </body>
 </html>

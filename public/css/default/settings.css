@@ -30,7 +30,7 @@ a {
   height: 40px;
   background-color: #E7E5E5;
   background-repeat: no-repeat;
-  background-size: 40px 40px;
+  background-size: cover;
   background-position: left top;
   cursor: pointer;
   display: inline;
@@ -71,4 +71,20 @@ a {
 
 .hint {
   color: red;
+}
+
+@media (min-width: 100px) and (max-width: 611px), (max-device-width: 415px) {
+  .buttons {
+    height: 80px;
+    width: 80px;
+  }
+
+  .settings-form {
+    width: 80vw;
+    max-width: none;
+  }
+
+  body {
+    font-size: 3vw;
+  }
 }

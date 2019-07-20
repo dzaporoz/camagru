@@ -15,4 +15,9 @@ function prepareScripts() {
                 }, 2000);
         }
     });
+
+    if (Math.max(document.documentElement.clientWidth, window.innerWidth || 0) <= 1000) {
+        let link = document.querySelector('#header-corner a');
+        link.href = 'javascript:void(0)';
+    }
 }

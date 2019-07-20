@@ -45,7 +45,8 @@
     <textarea name="description" id='description' maxlength="200" placeholder="Add image description..."></textarea>
 </form>
 <?php if ($posts):?>
-    <h1 align="center" style="color: #FFFFFF">Your latest posts</h1>
+<div class="posts-block">
+    <h2 align="center" style="color: #FFFFFF">Your latest posts</h2>
     <div class="posts">
         <?php
         foreach ($posts as $post) {
@@ -53,4 +54,5 @@
         }
         ?>
     </div>
+</div>
 <?php endif; ?>

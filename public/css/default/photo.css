@@ -5,44 +5,78 @@
 }
 
 #frames, #onlays {
-  width: 17vw;
+  width: 7vw;
   height: 33vw;
+  max-height: 495px;
   overflow-y: scroll;
   visibility: hidden;
 }
 
 .frame, .onlay {
-  width: 15vw;
+  width: 100%;
   height: auto;
   background-position: 0 0;
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: cover;
 }
 
 .posts {
   margin: auto;
   margin-top: 20px;
   width: 100vw;
+  height: 260px;
   overflow-x: auto;
   white-space: nowrap;
   text-align: center;
+  overflow-y: hidden;
+}
+
+.posts-block {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
 }
 
 .posts img {
-  height: 10vw;
+  height: 100%;
   min-height: 245px;
   width: auto;
 }
+
+.posts::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+.posts::-webkit-scrollbar
+{
+  width: 12px;
+  background-color: #F5F5F5;
+}
+
+.posts::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #2a3556;
+}
+
 
 #myOnlineCamera {
   overflow: auto;
   position: relative;
   width: 44vw;
+  height: 33vw;
+  max-width: 660px;
+  max-height: 495px;
+  overflow: hidden;
 }
 
 #myOnlineCamera video, canvas, #video-error {
-  width: 44vw;
-  height: 33vw;
+  width: 100%;
+  height: 100%;
   margin: auto;
   display: none;
 }
@@ -87,20 +121,23 @@ canvas {
   border: none;
   width: 4vw;
   height: 4vw;
+  max-height: 50px;
+  max-width: 50px;
   position: absolute;
   border-radius: 50%;
   background-repeat: no-repeat;
-  background-size: 4vw 4vw;
   background-position: left top;
+  background-size: cover;
   cursor: pointer;
   display: none;
-  bottom: 10%;
+  bottom: 2%;
   z-index: 5;
 }
 
 #description {
   width: 44vw;
-  height: auto;
+  max-width: 660px;
+  height: 8vw;
   font-size: 20px;
   margin: auto;
   display: none;
@@ -157,4 +194,146 @@ canvas {
 
 #cancelBtn:hover {
   background-image: url("/public/img/default/cancel-hover.svg")
+}
+
+@media screen and (min-width: 1200px) {
+  #video-error {
+    font-size: 30px;
+  }
+}
+
+@media (min-width: 100px) and (max-width: 611px), (max-device-width: 415px) {
+  #description, #myOnlineCamera {
+    width: 100vw;
+    max-width: none;
+  }
+
+  #description {
+    height: 10vh;
+  }
+
+  #myOnlineCamera {
+    height: 75vw;
+    max-height: none;
+  }
+
+  .buttons {
+    max-height: none;
+    max-width: none;
+    height: 8vw;
+    width: 8vw;
+  }
+
+  #description::-webkit-input-placeholder, #description::-moz-placeholder, #description:-ms-input-placeholder,
+  #description::placeholder {
+    color: peachpuff;
+    font-size: 20px;
+  }
+
+  #frames, #onlays {
+    position: absolute;
+    top: 125vw;
+    width: 50vw;
+    height: 15vw;
+  }
+
+  #frames {
+    left: 0;
+  }
+
+  #onlays {
+    right: 0;
+  }
+
+  .frame, .onlay {
+    height: 100%;
+    width: auto;
+    overflow-y: hidden;
+    overflow-x: scroll;
+  }
+
+  #video-error {
+    font-size: 4vw;
+  }
+}
+
+
+@media (min-width: 612px) and (max-width: 1000px), (max-device-width: 1000px) {
+  #myOnlineCamera {
+    width: 76vw;
+    height: 57vw;
+    max-width: none;
+  }
+
+  #description {
+    width: 76vw;
+    height: 20vw;
+    max-width: none;
+  }
+
+  #video-error {
+    font-size: 3vw;
+  }
+
+  .buttons {
+    max-height: none;
+    max-width: none;
+    height: 5vw;
+    width: 5vw;
+  }
+
+  #frames, #onlays {
+    width: 10vw;
+    height: 57vw;
+  }
+
+  /*
+    #description {
+      height: 10vh;
+    }
+
+    #myOnlineCamera {
+      height: 75vw;
+      max-height: none;
+    }
+
+    .buttons {
+      max-height: none;
+      max-width: none;
+      height: 8vw;
+      width: 8vw;
+    }
+
+    #description::-webkit-input-placeholder, #description::-moz-placeholder, #description:-ms-input-placeholder,
+    #description::placeholder {
+      color: peachpuff;
+      font-size: 20px;
+    }
+
+    #frames, #onlays {
+      position: absolute;
+      top: 125vw;
+      width: 50vw;
+      height: 15vw;
+    }
+
+    #frames {
+      left: 0;
+    }
+
+    #onlays {
+      right: 0;
+    }
+
+    .frame, .onlay {
+      height: 100%;
+      width: auto;
+      overflow-y: hidden;
+      overflow-x: scroll;
+    }
+
+    #video-error {
+      font-size: 4vw;
+    }
+    */
 }

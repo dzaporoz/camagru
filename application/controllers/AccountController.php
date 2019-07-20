@@ -106,6 +106,7 @@ MESSAGE;
     public function logoutAction() {
         if (isset($_SESSION['uid'])) {
             unset($_SESSION['uid']);
+            unset($_SESSION['verified_user']);
         }
         $this->view->redirect('/');
         exit();
