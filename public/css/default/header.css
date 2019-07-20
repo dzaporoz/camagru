@@ -144,13 +144,17 @@ display: none;
 
 #menu-bar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
   html[xmlns] #menu-bar {
   display: block;
 }
 * html #menu-bar {
   height: 1%;
+}
+
+#header-name {
+  margin-right: auto !important;
 }
 
 #header-logo img {
@@ -184,9 +188,9 @@ display: none;
   display: block; 
 }
 
-#header-corner a {
+.header-button a {
   padding: 10px;
-  margin-top: 5px;
+  margin-top: 5px !important;
 }
 
 .side-menu:hover ~ side-menu

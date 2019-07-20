@@ -22,13 +22,15 @@
 .posts {
   margin: auto;
   margin-top: 20px;
-  width: 79vw;
+  width: 100vw;
   overflow-x: auto;
   white-space: nowrap;
+  text-align: center;
 }
 
 .posts img {
-  height: 20vw;
+  height: 10vw;
+  min-height: 245px;
   width: auto;
 }
 
@@ -54,10 +56,11 @@ canvas {
 }
 
 #video-error {
-  background-color: gray;
   color: white;
   font-size: 2vw;
   cursor: pointer;
+  text-align: center;
+
 }
 
 

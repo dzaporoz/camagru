@@ -1,18 +1,23 @@
 <?php
     if (isset($_SESSION['uid'])) {
-        $corner = <<<REGISTERED
-        <li id="header-corner"><a href="/?uid={$_SESSION['uid']}" >$username</a>
-            <ul class="side-menu">
-                <li><a href="/photo">Add a photo</a></li>
-                <li><a href="/settings">Settings</a></li>
-                <li><a href="/account/logout">Log out</a></li>
-            </ul>
-        </li>
-        
+        if (isset($username)) {
+            $corner = <<<REGISTERED
+                <li id="header-corner" class="header-button"><a href="/?uid={$_SESSION['uid']}" >$username</a>
+                    <ul class="side-menu">
+                        <li><a href="/photo">Add a photo</a></li>
+                        <li><a href="/settings">Settings</a></li>
+                        <li><a href="/account/logout">Log out</a></li>
+                    </ul>
+                </li>
 REGISTERED;
+        }
+        else {
+            $corner = '';
+        }
     } else {
         $corner = <<<UNREGISTERED
-        <li id="header-corner"><a href="/account/login" tabindex="1" >Log in</a></li>
+        <li class="header-button"><a href="/account/register" tabindex="1" >Sign up</a></li>
+        <li class="header-button"><a href="/account/login" tabindex="1" >Log in</a></li>
 UNREGISTERED;
     }
 ?>

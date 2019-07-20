@@ -13,7 +13,13 @@
     <div id="myOnlineCamera">
         <input type="file" name="file" id="file" class="inputfile" accept="image/*" />
         <video id = "video">Webcam preview is not supported</video>
-        <label for="file"><div id="video-error">It seems that your browser doesn't support work with webcam or webcam not found. You can only load an existing image.</div></label>
+        <label for="file">
+            <div id="video-error">
+                <p>It seems that your browser doesn't support work with webcam or webcam not found.</p>
+                <p>Maybe you click "deny" button, when browser asks you for the permission to use webcam. Check browser settings.</p>
+                <p>Now you can only upload an existing image from your device.</p>
+            </div>
+        </label>
         <canvas id="main-canvas"></canvas>
         <canvas id="onlay-canvas"></canvas>
         <img id="photoBtn" class="buttons" alt="take a photo" src="/public/img/default/1px.png">
@@ -33,18 +39,18 @@
         ?>
     </div>
 </div>
-<?php if ($posts):?>
-<h2 align="center">Latest posts</h2>
-<div class="posts">
-    <?php
-    foreach ($posts as $post) {
-        echo "<a href=\"http://{$_SERVER['HTTP_HOST']}\?uid={$_SESSION['uid']}&img_id={$post['img_id']}\"><img src=\"{$post['img_url']}\" /></a>";
-    }
-    ?>
-</div>
-<?php endif; ?>
 <form action="/photo/load" method="post" enctype="multipart/form-data" accept-charset="utf-8" name="uploading-form">
     <input name="MAX_FILE_SIZE" type="hidden" value="20971520" />
     <input name="hidden_data" id='hidden_data' type="hidden"/>
     <textarea name="description" id='description' maxlength="200" placeholder="Add image description..."></textarea>
 </form>
+<?php if ($posts):?>
+    <h1 align="center" style="color: #FFFFFF">Your latest posts</h1>
+    <div class="posts">
+        <?php
+        foreach ($posts as $post) {
+            echo "<a href=\"http://{$_SERVER['HTTP_HOST']}\?uid={$_SESSION['uid']}&img_id={$post['img_id']}\"><img src=\"{$post['img_url']}\" /></a>";
+        }
+        ?>
+    </div>
+<?php endif; ?>

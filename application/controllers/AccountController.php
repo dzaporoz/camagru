@@ -64,7 +64,7 @@ Please follow this link to activate your account:
 http://{$_SERVER['HTTP_HOST']}/account/verify?email={$data['email']}&hash={$data["hash"]}
 MESSAGE;
         $this->sendEmail($data['email'], $subject, $message);
-        echo 'ok';
+//        echo 'ok';
     }
 
     public function verifyAction() {
@@ -72,9 +72,10 @@ MESSAGE;
             $vars['message'] = "Incorrect verification link. Please try again to follow this link from your email";
         } else {
             if (!isset($_SESSION['uid'])) {
-                $vars['message'] = "Your account has been activated, you can login now";
+                $vars['message'] = "<h1>Your account has been activated</h1><p style='color: #FFFFFF'>You can login now</p><a href='/account/login'>Go to login page</a>";
             } else {
-                $vars['message'] = "Your account has been activated, you have full access to all features now";
+                $_SESSION['verified_user'] = 1;
+                $vars['message'] = "<h1>Your account has been activated</h1><p style='color: #FFFFFF'>You have full access to all features now</p><a href='/'>Go to main page</a>";
             }
         }
         $this->view->render('Verification page', $vars);
@@ -237,7 +238,11 @@ MESSAGE;
         $header .= iconv_mime_encode("Subject", $mail_subject, $preferences);
         $result = mail($recipient, $mail_subject, $mail_message, $header);
         if (!$result) {
-            echo error_get_last()['message'];
+            $message = error_get_last()['message'];
+            if (!$message) { $message = 'An error occured while trying to send a letter. Please, try arain later.'; }
+            echo $message;
+        } else {
+            echo 'ok';
         }
     }
 }
