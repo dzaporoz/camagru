@@ -54,16 +54,15 @@
 
 .elementData .likes {
   position: absolute;
-  right: 1vw;
-  bottom: 1vw;
+  right: 0.2vw;
+  top: 0.2vw;
   display: inline;
 }
 
 .elementData .likes img {
-  width: 3vw;
-  height: 3vw;
-  min-width: 45px;            /*mobile adaptive*/
-  min-height: 45px;            /*mobile adaptive*/
+  width: 2vw;
+  height: 2vw;
+
   background-repeat: no-repeat;
   margin: 0;
   padding: 0;
@@ -84,19 +83,30 @@
   background-image: url("/public/img/default/liked.svg");
 }
 
+.elementData .username {
+  text-align: center;
+  background: #092756;
+  background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top,  rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg,  #670d10 0%, #092756 100%);
+  background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+  background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+  background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+  background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg,  #670d10 0%,#092756 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
+}
+
 .elementData .username a {
   font-weight: bold;
   color: white;
-  font-size: 2vw;
+  font-size: 1.8vw;
   padding: 1vw;
 }
 
 .delete {
   position: absolute;
-  right: 1vw;
-  top: 1vw;
-  width: 3vw;
-  height: 3vw;
+  left: 0.2vw;
+  top: 0.2vw;
+  width: 2.0vw;
+  height: 2.0vw;
   background-repeat: no-repeat;
   margin: 0;
   padding: 0;
@@ -112,9 +122,17 @@
   font-size: 1.5vw;
   position: absolute;
   top: 3vw;
-  padding: 1vw;
   overflow-wrap: break-word;
-  width: 92%;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-height: 2.2vw;
+  max-height: 9vw;
+  margin: auto;
 }
 
 .elementData .comments {
@@ -127,7 +145,13 @@
 #post-window {
   width: 70vw;
   height: 40vw;
-  background-color: rgb(58, 58, 58);
+  background: #092756;
+  background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top,  rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg,  #670d10 0%, #092756 100%);
+  background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+  background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+  background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+  background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg,  #670d10 0%,#092756 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
   margin: auto;
   display: none;
   flex-direction: row;
@@ -139,13 +163,17 @@
 }
 
 #post-head {
-  height: 42%;
+  height: auto;
+  position: relative;
+}
+
+#post-author-field {
+  text-align: center;
 }
 
 #post-author {
   color: white;
-  font-size: 4vw;
-  
+  font-size: 3vw;
   margin: 1vw;
 }
 
@@ -193,13 +221,12 @@
 }
 
 #post-likes {
-  float: right;
-  padding: 1vw;
+  float: left;
 }
 
 #post-likes span {
   color: white;
-  font-size: 3vw;
+  font-size: 2.5vw;
 }
 
 #like-post {
@@ -209,14 +236,22 @@
   float: right;
 }
 
+#like-post.unliked {
+  background-color: transparent;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
 #delete-post {
   width: 4vw;
   height: 4vw;
-  margin: 1vw;
   padding: 0;
-  position: static;
+  position: absolute;
   cursor: pointer;
-  float: right;
+  top: 0.5vw;
+  left: unset;
+  right: 0.5vw !important;
 }
 
 #close-post:hover {
@@ -252,17 +287,21 @@
   resize: none;
   width: 100%;
   height: 100%;
-  font-size: 1vw;
+  font-size: 1.3vw;
+  color: white;
   border:solid 1px black;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  background: none;
+  padding-right: 5vw;
 }
 
 #post-comments-num {
   display: block;
   color: white;
-  font-size: 1.5vw;
+  font-size: 2.5vw;
+  text-align: right;
 }
 
 #add-comment {
@@ -279,22 +318,21 @@
 }
 
 #post-comments {
-  background-color: white;
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 30vw;
   height: 58%;
+  color: #fff;
 }
 
 .comment a {
   font-size: 1.5vw;
-  color: black;
   font-weight: bold;
   padding: 0.5vw;
+  color: #fff;
 }
 
 .comment span {
   font-size: 1.5vw;
-  color: black;
   display: block;
   padding: 0.5vw;
   overflow-wrap: break-word;
@@ -309,8 +347,18 @@
 }
 
 .comment hr {
-  border-top: 1px dashed black;
+  border-top: 1px dashed white;
   width: 95%;
+}
+
+#add-comment, #delete-post, #like-post {
+  margin: 0;
+  padding: 0;
+}
+
+#middle-section {
+  position: relative;
+  height: 4vw;
 }
 
 @media screen and (min-width: 2000px) {
@@ -323,8 +371,37 @@
   #feed {
     width: 95vw;
   }
+
+  #post-window {
+    width: 900px;
+  }
+
+  #delete-post, #add-comment, #like-post {
+    width: 50px;
+    height: 50px;
+  }
+
+  #delete-post {
+    top: 5px;
+    right: 5px;
+  }
+
+  #add-comment {
+    bottom: 5px;
+    right: 5px;
+  }
+
+  #comment-form textarea {
+    font-size: 18px;
+    padding-right: 65px;
+  }
 }
 
+@media screen and (max-width: 979px) {
+  .element:hover .elementData {
+    display: none;
+  }
+}
 
 @media screen and (min-width: 612px) {
   #feed {
@@ -342,6 +419,10 @@
     max-width: none;
     max-height: none;
   }
+
+  .element:hover .elementData {
+    display: none;
+  }
 }
 
 @media (max-device-width: 415px) {
@@ -353,5 +434,9 @@
     height: 67.5vw;
     max-width: none;
     max-height: none;
+  }
+
+  .element:hover .elementData {
+    display: none;
   }
 }

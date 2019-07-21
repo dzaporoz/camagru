@@ -99,8 +99,8 @@ function changelike(likeButton) {
   }
   likesCount = parseInt(feedLikes.querySelector('span').innerHTML);
   if (likeButton.className.match(/(?:^|\s)liked(?!\S)/) ) {
-    postWindowLikes.querySelector('img').className = postWindowLikes.querySelector('img').className.replace(/(?:^|\s)liked(?!\S)/g , '');
-    postWindowLikes.querySelector('img').className += "unliked";
+    postWindowLikes.querySelector('input').className = postWindowLikes.querySelector('input').className.replace(/(?:^|\s)liked(?!\S)/g , '');
+    postWindowLikes.querySelector('input').className += "unliked";
     feedLikes.querySelector('img').className = feedLikes.querySelector('img').className.replace(/(?:^|\s)liked(?!\S)/g , '');
     feedLikes.querySelector('img').className += "unliked";
     if (likesCount > 0) {
@@ -108,8 +108,8 @@ function changelike(likeButton) {
       feedLikes.querySelector('span').innerHTML = likesCount - 1;
     }
   } else {
-    postWindowLikes.querySelector('img').className = postWindowLikes.querySelector('img').className.replace(/(?:^|\s)unliked(?!\S)/g , '');
-    postWindowLikes.querySelector('img').className += "liked";
+    postWindowLikes.querySelector('input').className = postWindowLikes.querySelector('input').className.replace(/(?:^|\s)unliked(?!\S)/g , '');
+    postWindowLikes.querySelector('input').className += "liked";
     feedLikes.querySelector('img').className = feedLikes.querySelector('img').className.replace(/(?:^|\s)unliked(?!\S)/g , '');
     feedLikes.querySelector('img').className += "liked";
     postWindowLikes.querySelector('span').innerHTML = likesCount + 1;
