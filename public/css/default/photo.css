@@ -235,6 +235,7 @@ canvas {
     top: 125vw;
     width: 50vw;
     height: 15vw;
+    overflow-x: auto;
   }
 
   #frames {
@@ -248,8 +249,7 @@ canvas {
   .frame, .onlay {
     height: 100%;
     width: auto;
-    overflow-y: hidden;
-    overflow-x: scroll;
+    display: inline;
   }
 
   #video-error {
@@ -336,4 +336,37 @@ canvas {
       font-size: 4vw;
     }
     */
+}
+
+@media screen and (min-width: 100px) and (max-width: 611px) {
+  h1 {
+    margin-top: 100px;
+    font-size: 30px;
+  }
+
+  #myOnlineCamera {
+    width: 96vw;
+    height: 72vw;
+  }
+  #description {
+    width: 96vw;
+    height: 150px;
+  }
+
+  .buttons {
+    width: 40px;
+    height: 40px;
+  }
+  #photoBtn, #okBtn {
+    left: 40%;
+  }
+  #loadBtn, #cancelBtn {
+    left: 53%;
+  }
+
+  #frames, #onlays {
+    left: 0;
+    width: 25vw;
+    height: 25vw;
+  }
 }

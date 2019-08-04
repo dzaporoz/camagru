@@ -268,6 +268,9 @@ function changeInterface(toVideoScreen) {
     $('frames').style.visibility = "hidden";
     $('onlays').style.visibility = "hidden";
     $('description').style.display = "none";
+    if (screen.width < 612) {
+      document.querySelector('.posts-block').style.display = "inline";
+    }
   } else {
     frame.setAttribute('is-visible', 'false');
     onlay.setAttribute('is-visible', 'false');
@@ -281,6 +284,9 @@ function changeInterface(toVideoScreen) {
     $('frames').style.visibility = "visible";
     $('onlays').style.visibility = "visible";
     $('description').style.display = "block";
+    if (screen.width < 612) {
+      document.querySelector('.posts-block').style.display = "none";
+    }
   }
 }
 
