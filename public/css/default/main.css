@@ -16,7 +16,10 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-  overflow: visible;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 130px;
 }
 
 .element {
@@ -144,7 +147,7 @@
 
 #post-window {
   width: 70vw;
-  height: 40vw;
+  /*height: 40vw;*/
   background: #092756;
   background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top,  rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg,  #670d10 0%, #092756 100%);
   background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
@@ -165,6 +168,7 @@
 #post-head {
   height: auto;
   position: relative;
+  width: 100%;
 }
 
 #post-author-field {
@@ -173,14 +177,14 @@
 
 #post-author {
   color: white;
-  font-size: 3vw;
-  margin: 1vw;
+  font-size: 25px;
+  margin: 20px;
 }
 
 #post-description {
   color: white;
-  margin-top: 1.5vw;
-  font-size: 1.5vw;
+  margin: 20px;
+  font-size: 25px;
   display: block;
   -webkit-hyphens: auto; -ms-hyphens: auto; hyphens: auto;
   line-break: auto;
@@ -190,7 +194,7 @@
 #post-data {
   display: inline-block;
   width: 30vw;
-  height: 100%;
+  position: relative;
 }
 
 #post-data span {
@@ -211,6 +215,8 @@
 #close-post {
   height: 3vw;
   width: 3vw;
+  max-height: 45px;
+  max-width: 45px;
   padding: 0;
   margin: 0;
   background-image: url("/public/img/default/close.svg");
@@ -221,12 +227,12 @@
 }
 
 #post-likes {
-  float: left;
+  float: right;
 }
 
 #post-likes span {
   color: white;
-  font-size: 2.5vw;
+  font-size: 25px;
 }
 
 #like-post {
@@ -247,11 +253,15 @@
   width: 4vw;
   height: 4vw;
   padding: 0;
-  position: absolute;
   cursor: pointer;
-  top: 0.5vw;
-  left: unset;
-  right: 0.5vw !important;
+  display: inline;
+  position: static;
+  float: right;
+  background-color: inherit;
+}
+
+#delete-post, #like-post {
+  margin-left: 5px;
 }
 
 #close-post:hover {
@@ -271,8 +281,8 @@
 }
   
 #comment-form {
-  width: 40vw;
-  height: 10vw;
+  width: 100%;
+  height: 150px;
   display: block;
   position: relative;
   text-align: center;
@@ -280,7 +290,7 @@
 
 #comment-form span {
   color: white;
-  font-size: 2vw;
+  font-size: 25px;
 }
 
 #comment-form textarea {
@@ -298,16 +308,19 @@
 }
 
 #post-comments-num {
-  display: block;
+  float: right;
+  margin-right: 20px;
   color: white;
-  font-size: 2.5vw;
+  font-size: 25px;
   text-align: right;
 }
 
 #add-comment {
   background-image: url("/public/img/default/add.svg");
   width: 4vw;
-  height: 4vw;
+  height: 82% !important;
+  background-position: center;
+  background-repeat: no-repeat;
   position: absolute;
   bottom: 0.5vw;
   right: 0.5vw;
@@ -319,20 +332,24 @@
 
 #post-comments {
   overflow-y: auto;
-  width: 30vw;
-  height: 58%;
+  overflow-x: hidden;
   color: #fff;
+  position: absolute;
+  top: 150px;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .comment a {
-  font-size: 1.5vw;
+  font-size: 20px;
   font-weight: bold;
-  padding: 0.5vw;
+  padding: 5px;
   color: #fff;
 }
 
 .comment span {
-  font-size: 1.5vw;
+  font-size: 20px;
   display: block;
   padding: 0.5vw;
   overflow-wrap: break-word;
@@ -351,39 +368,27 @@
   width: 95%;
 }
 
-#add-comment, #delete-post, #like-post {
-  margin: 0;
-  padding: 0;
-}
-
 #middle-section {
   position: relative;
   height: 4vw;
 }
 
+/*
 @media screen and (min-width: 2000px) {
   #feed {
     width: 95vw;
   }
 }
+*/
 
 @media screen and (min-width: 1233px) {
   #feed {
     width: 95vw;
   }
 
-  #post-window {
-    width: 900px;
-  }
-
   #delete-post, #add-comment, #like-post {
     width: 50px;
     height: 50px;
-  }
-
-  #delete-post {
-    top: 5px;
-    right: 5px;
   }
 
   #add-comment {
@@ -403,15 +408,52 @@
   }
 }
 
-@media screen and (min-width: 612px) {
+@media screen and (min-width: 612px) and (max-width: 1232px) {
+  #post-image {
+    width: 70vw;
+    height: 52.5vw;
+  }
+
+  #post-data {
+    width: 100%;
+    height: 100%;
+  }
+
+  #close-post {
+    top: -57vw;
+  }
+
+  #post-window {
+    height: unset;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  #comment-form textarea {
+    font-size: 25px;
+  }
+
+  #post-comments {
+    position: static;
+  }
+
   #feed {
     width: 95vw;
   }
+
+  .comment img {
+    width: 40px;
+    height: 40px;
+  }
 }
 
-@media (min-width: 100px) and (max-width: 611px) {
+
+
+@media screen and (min-width: 100px) and (max-width: 611px) {
   #feed {
     width: 95vw;
+    padding-bottom: 130px;
   }
   .element {
     width: 90vw;
@@ -423,20 +465,78 @@
   .element:hover .elementData {
     display: none;
   }
-}
 
-@media (max-device-width: 415px) {
-  #feed {
-    width: 95vw;
+  #post-window {
+    top: 100px !important;
+    left: 5vw;
+    width: 90vw;
+    max-height: 85vh;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
-  .element {
+
+  #post-image {
     width: 90vw;
     height: 67.5vw;
-    max-width: none;
-    max-height: none;
   }
 
-  .element:hover .elementData {
+  #post-author {
+    display: block;
+    margin: 5px;
+  }
+
+  #delete-post, #add-comment, #like-post {
+    width: 40px;
+    height: 40px;
+  }
+
+  #post-author, #post-likes span, #post-comments-num {
+    font-size: 30px !important;
+  }
+
+  #post-description {
+    font-size: 15px;
+    float: right;
+    margin: 10px;
+  }
+
+  #post-data {
+    width: 100%;
+  }
+
+  #post-head {
+    text-align: center;
+  }
+
+  #post-likes {
+    display: inline;
+  }
+
+  #comment-form {
+    height: 100px;
+  }
+
+  #comment-form textarea {
+    font-size: 15px;
+    padding-right: 43px;
+  }
+
+  #post-comments {
+    position: static;
+    overflow-y: unset;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  #close-post {
     display: none;
   }
+
+  .comment img {
+    width: 40px;
+    height: 40px;
+  }
+
 }

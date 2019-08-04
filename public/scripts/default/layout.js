@@ -13,6 +13,8 @@ function prepareScripts() {
                 event.target.style.display = "none";
                 event.target.style.opacity = "1";
                 }, 2000);
+        } else if (event.target.id == 'credits') {
+            alert('Icons made by "Freepic" (flaticon.com/authors/freepik)\n from "Flaticon" (flaticon.com) is licensed by CC 3.0 BY (creativecommons.org/licenses/by/3.0/)');
         }
     });
 

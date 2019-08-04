@@ -24,6 +24,7 @@ UNREGISTERED;
 <!DOCTYPE HTML>
 <html>
 <head>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
     <title><?php echo $title ?></title>
     <link rel="shortcut icon" href="/public/img/default/favicon.png" />
     <link rel="stylesheet" href="/public/css/default/header.css">
@@ -36,7 +37,7 @@ UNREGISTERED;
 </head>
 <body>
     <ul id="menu-bar">
-     <!-- <a id="header-logo" href="/"><img src="/public/img/default/1px.png" /></a> --> 
+        <img id="mobile-post-close" src="/public/img/default/1px.png" >
         <a id="header-name" href="/"><img src="/public/img/default/1px.png" /></a> 
     <?php echo $corner ?>
     </ul>
@@ -45,7 +46,7 @@ UNREGISTERED;
     </div>
     <?php echo $content; ?>
     <div class="footer">
-        <p>Camagru project. Made by Dmytro Zaporozhchenko for School42</p>
+        <p>Camagru project. Made by Dmytro Zaporozhchenko for School42. <a id="credits" href="javascript:void(0)">&lt;Credits&gt;</a></p>
     </div>
 </body>
 </html>
