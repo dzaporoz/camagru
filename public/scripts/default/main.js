@@ -101,8 +101,8 @@ function changelike(likeButton) {
   if (likeButton.className.match(/(?:^|\s)liked(?!\S)/) ) {
     postWindowLikes.querySelector('input').className = postWindowLikes.querySelector('input').className.replace(/(?:^|\s)liked(?!\S)/g , '');
     postWindowLikes.querySelector('input').className += "unliked";
-    feedLikes.querySelector('img').className = feedLikes.querySelector('img').className.replace(/(?:^|\s)liked(?!\S)/g , '');
-    feedLikes.querySelector('img').className += "unliked";
+    feedLikes.querySelector('input').className = feedLikes.querySelector('input').className.replace(/(?:^|\s)liked(?!\S)/g , '');
+    feedLikes.querySelector('input').className += "unliked";
     if (likesCount > 0) {
       postWindowLikes.querySelector('span').innerHTML = likesCount - 1;
       feedLikes.querySelector('span').innerHTML = likesCount - 1;
@@ -110,8 +110,8 @@ function changelike(likeButton) {
   } else {
     postWindowLikes.querySelector('input').className = postWindowLikes.querySelector('input').className.replace(/(?:^|\s)unliked(?!\S)/g , '');
     postWindowLikes.querySelector('input').className += "liked";
-    feedLikes.querySelector('img').className = feedLikes.querySelector('img').className.replace(/(?:^|\s)unliked(?!\S)/g , '');
-    feedLikes.querySelector('img').className += "liked";
+    feedLikes.querySelector('input').className = feedLikes.querySelector('input').className.replace(/(?:^|\s)unliked(?!\S)/g , '');
+    feedLikes.querySelector('input').className += "liked";
     postWindowLikes.querySelector('span').innerHTML = likesCount + 1;
     feedLikes.querySelector('span').innerHTML = likesCount + 1;
   }
@@ -196,7 +196,7 @@ function openPost(element) {
 
   $('post-window').setAttribute('image_id', imageId);
   $('post-image').style.backgroundImage = element.style.backgroundImage;
-  $('like-post').className = element.querySelector('.likes img').className;
+  $('like-post').className = element.querySelector('.likes input').className;
   $('like-post').setAttribute('image_id', imageId);
   document.querySelector('#post-likes span').innerHTML = element.querySelector('.likes span').innerHTML;
   $('post-description').innerHTML = element.querySelector('.elementTitle').innerHTML;

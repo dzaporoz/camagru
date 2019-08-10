@@ -64,7 +64,7 @@ body { height: 100vh; }
   display: inline;
 }
 
-.elementData .likes img {
+.elementData .likes input {
   width: 2vw;
   height: 2vw;
 
@@ -76,8 +76,6 @@ body { height: 100vh; }
 
 .unliked {
   background-image: url("/public/img/default/unliked.svg");
-  background-color: white;
-  border-radius: 50%;
 }
 
 .unliked:hover {
@@ -104,6 +102,11 @@ body { height: 100vh; }
   color: white;
   font-size: 1.8vw;
   padding: 1vw;
+}
+
+.elementData .likes span {
+  color: white;
+  font-size: 1.8vw;
 }
 
 .delete {
