@@ -13,8 +13,10 @@ function prepareScripts() {
     let el;
     el = $('username');
     el && el.addEventListener('input', function(e) { validateLogin(e); });
+    if (!el) { validation[0] = 1 }
     el = $('email');
     el && el.addEventListener('input', function(e) { validateEmail(e); });
+    if (!el) { validation[1] = 1 }
     if ($('confirmation') && $('password')) {
         $('confirmation').addEventListener('input', validatePass);
         $('password').addEventListener('input', validatePass);
@@ -36,12 +38,17 @@ function validateLogin(event) {
 
 function validateEmail(event) {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let hint = $('emailhint');
     if (re.test(String(event.target.value).toLowerCase())) {
         markElement(event.target, 1, true);
-        $('emailhint').innerHTML = "";
+        if (hint) {
+            $('emailhint').innerHTML = "";
+        }
     } else {
         markElement(event.target, 1, false);
-        $('emailhint').innerHTML = "Wrong e-mail format";
+        if (hint) {
+            $('emailhint').innerHTML = "Wrong e-mail format";
+        }
     }
     validateForm();
 }

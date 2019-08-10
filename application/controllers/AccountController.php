@@ -119,8 +119,8 @@ MESSAGE;
 <form id="form" action="/account/restore" method="post">
 <p><span>Please type in your e-mail. The password recovery instructions will be sent on it.</span></p>
 <p><input id="email" type="email" name="email" placeholder="e-mail" required="required"></p>
-<a href="/account/login">Return to login page</a>
 <p><button id="button" type="submit" class="btn btn-primary btn-block btn-large">Send recovery letter</button></p>
+<a href="/account/login">Return to login page</a>
 </form>
 EMAIL_FORM;
         $incorrectForm = <<<INCORRECT_FORM
@@ -136,21 +136,19 @@ INCORRECT_FORM;
 
             if ($email && $hash && $password) {
                 if ($this->model->updatePassword($email, $hash, $password)) {
-                    $vars['form'] = "<div id=\"form\" class='forme'>
-<p>Password was changed successfully. You can <a href='/account/login'>login</a> now.</p>
-</div>";
+                    $vars['form'] = "<p><span>Password was changed successfully. You can <a href='/account/login'>login</a> now.</span></p>";
                 } else {
                     $vars['form'] = $incorrectForm;
                 }
             } elseif ($email) {
                 if ($this->model->confirmUserByEmail($email)) {
                     $this->sendRecoveryLetter($email);
-                    $vars["form"] = "<div id=\"form\" class='forme'>
-<p>Letter with recovery instructions was sent on $email (in case if e-mail is verified)</p> 
-Please check your e-mail.</div>";
+                    $vars["form"] = "
+<p><span>Letter with recovery instructions was sent on $email (in case if e-mail is verified)</span></p> 
+<p><span>Please check your e-mail.</span></p>";
                 } else {
                     $vars["form"] = $startForm;
-                    $vars['msg'] = "User with this e-mail unexist. Try again";
+                    $vars['msg'] = "User with this e-mail is unexist. Try again";
                 }
             } else {
                 $vars['form'] = $incorrectForm;
@@ -164,14 +162,14 @@ Please check your e-mail.</div>";
             } elseif ($this->model->verifyUser($email, $hash)) {
                 $vars['form'] = <<<PASSWORD_RECOVERY_FORM
 <form id="form" action="/account/restore" method="post">
-<p>Please type your new password and it confirmation in bellowing fields:</p>
-<p>Password* (6 characters minimum)</p>
+<p><span>Please type your new password and it confirmation in bellowing fields:</span></p>
+<p><span>Password* (6 characters minimum)</span></p>
 <p><input id="password" type="password" name="password" minlength="4" maxlength="20"></p>
 <div class="hint" id="passwordhint"> </div>
-<p>Password confirmation*</p>
+<p><span>Password confirmation*</span></p>
 <p><input id="confirmation" type="password" name="confirmation"></p>
 <div class="hint" id="confirmationhint"> </div>
-<p><button id="button" type="submit" >Recover</button></p>
+<p><button id="button" type="submit" class="btn btn-primary btn-block btn-large" >Recover</button></p>
 <input type="hidden" name="email" value="{$_GET['email']}">
 <input type="hidden" name="hash" value="{$_GET['hash']}">
 </form>
@@ -182,6 +180,7 @@ PASSWORD_RECOVERY_FORM;
         }
 
         $vars['styles'] = array('account.css');
+        $vars['scripts'] = array('formCheck.js');
         $this->view->render('Password recovering page', $vars);
     }
 
@@ -223,7 +222,7 @@ MESSAGE;
 
     protected function sendEmail($recipient, $mail_subject, $mail_message) {
         $encoding = "utf-8";
-        $sender_mail = "dzaporoz@student.unit.ua";
+        $sender_mail = "dzaporoz@student.42.fr";
         $preferences = array(
             "input-charset" => $encoding,
             "output-charset" => $encoding,
@@ -242,7 +241,7 @@ MESSAGE;
             $message = error_get_last()['message'];
             if (!$message) { $message = 'An error occured while trying to send a letter. Please, try arain later.'; }
             echo $message;
-        } else {
+        } else if ($_SERVER['REQUEST_URI'] != '/account/restore') {
             echo 'ok';
         }
     }

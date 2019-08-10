@@ -139,24 +139,6 @@ function deleteImage (button)
 }
 
 function openPost(element) {
-/*
-  xhr = new XMLHttpRequest(),
-  params = 'action=getPost&image_id=' + getPostId(element);
-  xhr.open('POST', 'main/action', true);
-  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xhr.onreadystatechange = function() {
-    if(xhr.readyState == 4 && xhr.status == 200) {
-      var postData = xhr.responseText;
-      alert(postData);
-      if (postData.has['img_url']) {
-        document.querySelector('#post-image').style.backgroundImage = postData['img_url'];      
-      }
-      if (postData.has[''])...
-      ...
-    }
-  }
-  xhr.send(params);
-*/
   if (element == null) {
     errorMsg('Error occured. Reload page and try again');
     return;
@@ -170,6 +152,7 @@ function openPost(element) {
   if (screen.width < 612) {
     $('header-name').style.display = "none";
     $('mobile-post-close').style.display = "inline";
+    scroll += 50;
   }
   post.style.display = "flex";
   post.style.top = scroll + 70 + 'px';

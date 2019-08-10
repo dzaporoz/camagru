@@ -22,18 +22,14 @@ foreach ($sqlArray as $stmt) {
   if (strlen($stmt)>3 && substr(ltrim($stmt),0,2)!='/*') {
     $result = mysqli_query($link, $stmt);
     if (!$result) {
-      $sqlStmt = $stmt;
       break;
     }
   }
 }
-if ($sqlErrorCode == 0) {
+if ($result) {
   echo "Script is executed succesfully!\n<br>";
 } else {
   echo "An error occured during installation!\n<br>";
-  echo "Error code: $sqlErrorCode\n<br>";
-  echo "Error text: $sqlErrorText\n<br>";
-  echo "Statement:\n<br> $sqlStmt\n<br>";
+  echo mysqli_error($link)."<br>";
+  echo "Statement:\n<br> $stmt\n<br>";
 }
-
-?>

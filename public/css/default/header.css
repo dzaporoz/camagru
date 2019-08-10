@@ -266,6 +266,10 @@ display: none;
   font-family: arial;
 }
 
+.footer a {
+  color: #ffffff;
+}
+
 @media (min-width: 100px) and (max-width: 611px), (max-device-width: 415px) {
 
   #menu-bar {

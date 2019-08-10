@@ -20,6 +20,8 @@ function prepareScripts() {
 
     if (Math.max(document.documentElement.clientWidth, window.innerWidth || 0) <= 1000) {
         let link = document.querySelector('#header-corner a');
-        link.href = 'javascript:void(0)';
+        if (link) {
+            link.href = 'javascript:void(0)';
+        }
     }
 }

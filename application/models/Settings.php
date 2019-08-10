@@ -33,13 +33,12 @@ class Settings extends Model {
     {
         $sql = 'SELECT uid FROM users WHERE uid= :uid AND password= :password';
         $params = array('uid' => $uid, 'password' => hash('whirlpool', $oldPassword));
-        if ($this->db->row($sql, $params)) {
+        if (!$this->db->row($sql, $params)) {
             return false;
         } else {
             $sql = 'UPDATE users SET password = :password WHERE uid = :uid';
             $params['password'] = hash('whirlpool', $password);
             return $this->db->query($sql, $params);
-     return true;
         }
     }
 

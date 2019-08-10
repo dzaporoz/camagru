@@ -19,16 +19,14 @@ body { height: 100vh; }
   flex-flow: row wrap;
   justify-content: flex-start;
   max-height: 90vh;
-  overflow-y: auto;
-  overflow-x: hidden;
   padding-bottom: 130px;
 }
 
 .element {
-  width: 24vw;
+  width: 22vw;
   min-width: 300px;            /*mobile adaptive*/
   max-width: 440px;
-  height: 18vw;
+  height: 16.5vw;
   min-height: 225px;            /*mobile adaptive*/
   max-height: 330px;
   margin: 0.5vw;
@@ -476,7 +474,6 @@ body { height: 100vh; }
   }
 
   #post-window {
-    top: 100px !important;
     left: 5vw;
     width: 90vw;
     max-height: 85vh;
