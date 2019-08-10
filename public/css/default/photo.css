@@ -1,3 +1,5 @@
+body {height: 100vh;}
+
 #flexbox {
   display: flex;
   flex-direction: row;
@@ -29,12 +31,6 @@
   white-space: nowrap;
   text-align: center;
   overflow-y: hidden;
-}
-
-.posts-block {
-  position: absolute;
-  bottom: 60px;
-  left: 0;
 }
 
 .posts img {
@@ -286,70 +282,19 @@ canvas {
     width: 10vw;
     height: 57vw;
   }
-
-  /*
-    #description {
-      height: 10vh;
-    }
-
-    #myOnlineCamera {
-      height: 75vw;
-      max-height: none;
-    }
-
-    .buttons {
-      max-height: none;
-      max-width: none;
-      height: 8vw;
-      width: 8vw;
-    }
-
-    #description::-webkit-input-placeholder, #description::-moz-placeholder, #description:-ms-input-placeholder,
-    #description::placeholder {
-      color: peachpuff;
-      font-size: 20px;
-    }
-
-    #frames, #onlays {
-      position: absolute;
-      top: 125vw;
-      width: 50vw;
-      height: 15vw;
-    }
-
-    #frames {
-      left: 0;
-    }
-
-    #onlays {
-      right: 0;
-    }
-
-    .frame, .onlay {
-      height: 100%;
-      width: auto;
-      overflow-y: hidden;
-      overflow-x: scroll;
-    }
-
-    #video-error {
-      font-size: 4vw;
-    }
-    */
 }
 
 @media screen and (min-width: 100px) and (max-width: 611px) {
   h1 {
-    margin-top: 100px;
     font-size: 30px;
   }
 
   #myOnlineCamera {
-    width: 96vw;
+    width: 100vw;
     height: 72vw;
   }
   #description {
-    width: 96vw;
+    width: 100vw;
     height: 150px;
   }
 
@@ -364,9 +309,31 @@ canvas {
     left: 53%;
   }
 
+  #flexbox { flex-direction: column; }
+
+  #myOnlineCamera { order: -1; }
+
   #frames, #onlays {
-    left: 0;
-    width: 25vw;
+    position: static;
+    display:block;
+    width: 100vw;
     height: 25vw;
+    overflow-y: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-top: 5px;
   }
+
+  .posts-block {
+    position:static;
+  }
+
+  .posts {
+    height: 230px;
+  }
+
+  .posts img {
+    min-height: 220px;
+  }
+
 }

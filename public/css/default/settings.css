@@ -1,10 +1,10 @@
+body {margin-bottom: 30px;}
+
 .settings-form {
   width: 60vw;
   max-width: 500px;
-  max-height: 90vh;
   position: static;
   margin: auto;
-  overflow-y: auto;
   padding-bottom: 150px;
 /*  left: 20vw;
   top: 10vw;

@@ -4,7 +4,7 @@
 <div id="feedLoad">
 </div>
 <div id="post-window">
-    <div>
+    <div id="main-data">
         <img id="post-image" src="/public/img/default/1px.png" />
         <div id="post_data">
             <div id="post-head">

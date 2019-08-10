@@ -268,8 +268,10 @@ function changeInterface(toVideoScreen) {
     $('frames').style.visibility = "hidden";
     $('onlays').style.visibility = "hidden";
     $('description').style.display = "none";
+    document.querySelector('.posts-block').style.display = "inline";
     if (screen.width < 612) {
-      document.querySelector('.posts-block').style.display = "inline";
+      $('frames').style.display = "none";
+      $('onlays').style.display = "none";
     }
   } else {
     frame.setAttribute('is-visible', 'false');
@@ -281,11 +283,13 @@ function changeInterface(toVideoScreen) {
     $('main-canvas').style.display = "block";
     $('okBtn').style.display = "block";
     $('cancelBtn').style.display = "block";
+    $('description').style.display = "block";
     $('frames').style.visibility = "visible";
     $('onlays').style.visibility = "visible";
-    $('description').style.display = "block";
+    document.querySelector('.posts-block').style.display = "none";
     if (screen.width < 612) {
-      document.querySelector('.posts-block').style.display = "none";
+      $('frames').style.display = "block";
+      $('onlays').style.display = "block";
     }
   }
 }
