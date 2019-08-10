@@ -11,12 +11,16 @@ if (document.readyState !== 'loading') {
 function prepareScripts() {
 
     let el;
+    if (!$('username')) { validation[0] = 1 }
+    if (!$('email')) { validation[1] = 1 }
+    if (!$('password')) { validation[2] = 1 }
+    if (!$('confirmation')) { validation[3] = 1 }
+
     el = $('username');
     el && el.addEventListener('input', function(e) { validateLogin(e); });
-    if (!el) { validation[0] = 1 }
     el = $('email');
     el && el.addEventListener('input', function(e) { validateEmail(e); });
-    if (!el) { validation[1] = 1 }
+
     if ($('confirmation') && $('password')) {
         $('confirmation').addEventListener('input', validatePass);
         $('password').addEventListener('input', validatePass);
