@@ -14,5 +14,7 @@ git clone https://github.com/dzaporoz/camagru.git
 cd camagru
 ```
 Change config/db.php according to your database settings
+
 Run `php install.php`
+
 Run PHP built-in server
