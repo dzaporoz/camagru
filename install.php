@@ -1,13 +1,20 @@
 <?php
 $sqlFileToExecute = 'db.sql';
 
-$config = require 'application/config/db.php';
+$config = array_merge([
+    'user'      => null,
+    'password'  => null,
+    'port'      => null
+], require __DIR__ . '/application/config/db.php');
 
-$link = mysqli_connect($config["host"], $config["user"], $config["password"]);
-if (!$link) {
-  #die ("MySQL Connection error");
-  echo mysqli_error($config["host"]);
-  echo mysqli_errno($config["host"]);
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+try {
+    $link = mysqli_connect($config["host"], $config["user"], $config["password"], null, $config['port']);
+    if (! $link) {
+        throw new Exception();
+    }
+} catch (Exception $e) {
+    die("Unfortunately, the details you entered for connection are incorrect! Check a configuration file.\n");
 }
 
 $sql = "CREATE DATABASE IF NOT EXISTS " . $config["dbname"];
@@ -27,9 +34,9 @@ foreach ($sqlArray as $stmt) {
   }
 }
 if ($result) {
-  echo "Script is executed succesfully!\n<br>";
+  echo "Script is executed succesfully!\n";
 } else {
-  echo "An error occured during installation!\n<br>";
-  echo mysqli_error($link)."<br>";
-  echo "Statement:\n<br> $stmt\n<br>";
+  echo "An error occured during installation!\n";
+  echo mysqli_error($link);
+  echo "Statement:\n $stmt\n";
 }

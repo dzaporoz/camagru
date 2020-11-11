@@ -43,21 +43,21 @@ class PhotoController extends Controller {
                 $cut = imagecreatetruecolor(1024, 768);
                 imagecopy($cut, $image, 0, 0, 0, 0, 1024, 768);
                 if ($_POST['frame']) {
-                    if (!isset($_POST['frameURL']) || strpos($_POST['frameURL'], 'http://localhost') !== 0) {
+                    if (!isset($_POST['frameURL'])) {
                         die ('Invalid frame image data');
-                    } elseif (!($frame = imagecreatefrompng($_POST['frameURL']))) {
+                    } elseif (!($frame = imagecreatefrompng(preg_replace('~.*public/frames/([\d]*)~', 'public/frames/$1', $_POST['frameURL'])))) {
                         die ('Unable to load frame image. Try again later');
                     }
                     imagecopy($cut, $frame, 0, 0, 0, 0, 1024, 768);
                 }
                 if ($_POST['onlay']) {
-                    if (!isset($_POST['onlayURL']) || strpos($_POST['onlayURL'], 'http://localhost') !== 0) {
+                    if (!isset($_POST['onlayURL'])) {
                         die ('Invalid onlay image data');
                     } elseif (!isset($_POST['onlayX']) || !isset($_POST['onlayY'])) {
                         die ('Invelid onlay position data');
                     } elseif (!isset($_POST['onlayScale']) || $_POST['onlayScale'] < 1.0 || $_POST['onlayScale'] > 2.1) {
                         die ('Invalid onlay scale data');
-                    } elseif (!($onlay = imagecreatefrompng($_POST['onlayURL']))) {
+                    } elseif (!($onlay = imagecreatefrompng(preg_replace('~.*public/onlays/([\d]*)~', 'public/onlays/$1', $_POST['onlayURL'])))) {
                         die ('Unable to load onlay image');
                     }
                     $scaledOnlay = imagecreatetruecolor(imagesx($onlay) * $_POST['onlayScale'], imagesy($onlay) * $_POST['onlayScale']);
@@ -69,6 +69,9 @@ class PhotoController extends Controller {
                     imagecopy($cut, $scaledOnlay, $_POST['onlayX'], $_POST['onlayY'], 0, 0, imagesx($scaledOnlay), imagesy($scaledOnlay));
                 }
                     imagecopy($image, $cut, 0, 0, 0, 0, 1024, 768);
+            }
+            if (! file_exists($upload_dir)) {
+                mkdir($upload_dir, 0777, true);
             }
             $path = $upload_dir . time() . ".png";
             if (!imagepng($image, $path)) {
